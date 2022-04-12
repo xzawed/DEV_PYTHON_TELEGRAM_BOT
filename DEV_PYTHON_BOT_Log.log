@@ -1,0 +1,12 @@
+[52948 | 47792 | ERROR | main.py:164] 2022-04-11 22:57:28,118: ERR : Traceback (most recent call last):
+  File "K:/DEVELOPMENT/PYTHON_SAMPLE/DEV_PYTHON_BOT/main.py", line 155, in <module>
+    mysql.SelMysq(opt='START')
+AttributeError: module 'mysql' has no attribute 'SelMysq'
+
+[52544 | 50340 | ERROR | Errlog.py:32] 2022-04-11 23:14:16,267: ERR : ERR : Traceback (most recent call last):
+  File "K:/DEVELOPMENT/PYTHON_SAMPLE/DEV_PYTHON_BOT/main.py", line 129, in <module>
+    mysql.SelMysq(opt='START')
+AttributeError: module 'mysql' has no attribute 'SelMysq'
+
+[55704 | 47480 | ERROR | Errlog.py:37] 2022-04-12 21:29:36,150: ERR : ERR : NoneType: None
+
