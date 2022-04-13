@@ -141,6 +141,7 @@ def BotNaverPrinf(update, context):
 try:
     mysql.SelMysql(opt='START')
     # 아래 내용을 Class로 올려서 처리 하는건 어떨까
+    #
     updater.dispatcher.add_handler(CommandHandler('SET', BotSetPrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('set', BotSetPrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('GOOGLE', BotGooglePrinf, pass_args=True))
