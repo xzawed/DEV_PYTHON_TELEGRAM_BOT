@@ -75,6 +75,13 @@ except Exception:
 #                                                      +"         "+str(my_server_env_domain)+"\n\n"
 #                                                      +" CPU : "+str(my_server_env_cpu)+"\n\n"
 #                                                      +" CPU 갯수 : "+str(my_server_env_cpu_cnt) )
+def Helprint(update, context):
+    context.bot.sendMessage(chat_id=chat_room_id, text=" *** 사용가능한 명령어 리스트 입니다 *** "+"\n\n"
+                                                      +" '/help' : 도움말 기능입니다. " + "\n\n"
+                                                      +" '/set' : hi,토큰,서버에 대한 정보를 제공합니다. " + "\n\n"
+                                                      +" '/google' : 구글에서 검색한 결과 url정보를 제공합니다." + "\n\n"
+                                                      +" '/naver' : 네이버에서 검색한 결과 url정보를 제공합니다. " + "\n\n"
+                                                      +" 그외 여러 기능들이 추가로 개발될 예정입니다. " + "\n\n")
 
 # 아래부터는 특정 키워드를 입력받으면 출력을 처리하는 단일커맨드 예제를 처리
 # (if 문을 이용한 처리 예제)
@@ -110,7 +117,7 @@ def BotGooglePrinf(update, context):
     for arg in context.args:
         keywords += '{}'.format(arg)
 
-    context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 구글 검색")
+    context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 구글 검색 결과입니다.")
     context.bot.sendMessage(chat_id=chat_room_id, text="https://www.google.com/search?q="+keywords)
 
 def BotNaverPrinf(update, context):
@@ -119,8 +126,11 @@ def BotNaverPrinf(update, context):
     for arg in context.args:
         keywords += '{}'.format(arg)
 
-    context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 네이버 검색")
+    context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 네이버 검색 결과입니다.")
     context.bot.sendMessage(chat_id=chat_room_id, text="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="+keywords)
+
+### 아래부터는 구글번역기를 돌려서 나온 결과값을 리턴처리
+
 
 ### 아래부터는 주기적으로 특정메세지를 띄우는 예제를 처리
 
@@ -140,22 +150,28 @@ def BotNaverPrinf(update, context):
 # 대소문자별로 셋팅
 try:
     mysql.SelMysql(opt='START')
-    # 아래 내용을 Class로 올려서 처리 하는건 어떨까
+    # 아래 내용을 좀 어떻게 간소화 하고 싶은데 방법을 모르겠음.
+    # 도움말 제공기능
+    updater.dispatcher.add_handler(CommandHandler("help", Helprint))
+    updater.dispatcher.add_handler(CommandHandler("HELP", Helprint))
+    # 셋팅정보 제공
     updater.dispatcher.add_handler(CommandHandler('SET', BotSetPrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('set', BotSetPrinf, pass_args=True))
+    # 웹사이트 검색 기능
     updater.dispatcher.add_handler(CommandHandler('GOOGLE', BotGooglePrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('Google', BotGooglePrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('google', BotGooglePrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('NAVER', BotNaverPrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('Naver', BotNaverPrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('naver', BotNaverPrinf, pass_args=True))
+    # 구글 번역기 기능
 
     mysql.SelMysql(opt='END')
     err = traceback.format_exc()
-    Errlog.SaveLog('ERR : '+str(err))
+    Errlog.SaveLog(str(err))
 except Exception:
     err = traceback.format_exc()
-    Errlog.SaveLog('ERR : '+str(err))
+    Errlog.SaveLog(str(err))
 ########################################################################################################################
 
 ########################################################################################################################

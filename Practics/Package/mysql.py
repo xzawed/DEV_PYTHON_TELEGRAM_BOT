@@ -63,5 +63,5 @@ def SelMysql(opt):
             MariaDB.EndMysql(self=MariaDB)
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog('ERR : '+str(err))
+        Errlog.SaveLog(str(err))
 ########################################################################################################################
