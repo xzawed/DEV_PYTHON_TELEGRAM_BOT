@@ -26,3 +26,5 @@ AttributeError: module 'mysql' has no attribute 'SelMysq'
 
 [16524 | 10332 | ERROR | Errlog.py:37] 2022-04-16 01:51:36,136: ERR : NoneType: None
 
+[16348 | 15868 | ERROR | Errlog.py:37] 2022-04-16 03:18:14,822: ERR : NoneType: None
+
