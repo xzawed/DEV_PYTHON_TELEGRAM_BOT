@@ -14,7 +14,7 @@ Log=logging.getLogger('DEV_PYTHON_BOT_LOG')
 
 # log Format
 #LogLevel = logging.ERROR
-LogFileName = './DEV_PYTHON_BOT_Log.log'
+LogFileName = './Practics/log/DEV_PYTHON_BOT_Log.log'
 #LogFormat = logging.Formatter('[%(process)d | %(thread)d | %(levelname)s | %(filename)s:%(lineno)s] %(asctime)s: %(message)s')
 LogFormat = logging.Formatter('[%(process)d | %(thread)d | %(filename)s:%(lineno)s] %(asctime)s: %(message)s')
 
