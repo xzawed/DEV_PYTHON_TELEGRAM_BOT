@@ -40,27 +40,52 @@ curs = db.cursor()
 # 호출부 구현
 # class개념
 class MariaDB:
+    # MariaDB setting
+    def SessionMysql(self):
+        self.db = pymysql.connect(
+                                    host='dirtchamber.iptime.org',  # host name (연결주소)
+                                    port=13306,
+                                    user='root',  # user name (ID)
+                                    password='root',  # password (암호)
+                                    db='DEV_MARIADB',  # db name (데이터베이스명)
+                                    charset='utf8',
+                                    autocommit=False,
+                                    cursorclass=pymysql.cursors.DictCursor
+                                 )
+        #  DB와 관련된 커서 객체를 생성한다
+        self.curs = db.cursor()
+
     # MariaDB 연결이후 SELECT, UPDATE, INSERT, DELETE 에 해당되는 내용을 호출처리
     def StartMysql(self):
         sql = "SELECT 'A';"
-        curs.execute(sql)
+        self.curs.execute(sql)
         print("정상적으로 시작 되었습니다.")
 
     def EndMysql(self):
         sql = "SELECT 'A';"
-        curs.execute(sql)
+        self.curs.execute(sql)
         print("정상적으로 종료 되었습니다.")
+
+    # MariaDB Close
+    def CloseMysql(self):
+        self.curs.close()
+
+
 ########################################################################################################################
 
 ########################################################################################################################
 #  전역함수처리(외부에서 호출할때 쓰임)
 def SelMysql(opt):
     try:
+        MariaDB.SessionMysql(self=MariaDB)
+
         if   opt == "START":
             MariaDB.StartMysql(self=MariaDB)
         elif opt == "END":
             MariaDB.EndMysql(self=MariaDB)
+
+        MariaDB.CloseMysql(self=MariaDB)
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog('ERR : '+str(err))
+        Errlog.SaveLog(str(err))
 ########################################################################################################################

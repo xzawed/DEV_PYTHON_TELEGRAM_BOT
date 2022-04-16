@@ -6,6 +6,7 @@
 # 텔레그램 bot 채팅방ID 확인
 # https://api.telegram.org/bot5120813678:AAGz1vCMglGml4X5-eoTcFN3Y_JnWlFS6GY/getMe
 # 1984552353
+# -697051008
 ########################################################################################################################
 
 ########################################################################################################################
@@ -32,7 +33,7 @@ import Errlog
 ## 전역변수
 # telegram token key와 chat room id 입력
 my_api_key = "5120813678:AAGz1vCMglGml4X5-eoTcFN3Y_JnWlFS6GY"
-chat_room_id = 1984552353
+chat_room_id = -697051008
 my_server_env_os = platform.system()
 my_server_env_os_det = platform.platform()
 my_server_env_os_ver = platform.version()
@@ -58,6 +59,14 @@ except Exception:
 # 응답부 구현
 # 명령어와 연결할 기능 구현
 # 아래부터는 특정 커맨드를 입력받으면 출력을 처리하는 단일커맨드 예제를 처리
+def HelpPrint(update, context):
+    context.bot.sendMessage(chat_id=chat_room_id, text=" *** 사용가능한 명령어 리스트 입니다 *** " + "\n\n" +
+                                                       " '/help' : 도움말 기능입니다. " + "\n\n" +
+                                                       " '/set' : hi,토큰,서버에 대한 정보를 제공합니다. " + "\n\n" +
+                                                       " '/google' : 구글에서 검색한 결과 url정보를 제공합니다. " + "\n\n" +
+                                                       " '/naver' : 네이버에서 검색한 결과 url정보를 제공합니다. " + "\n\n" +
+                                                       " 그외 여러 기능들이 추가로 개발될 예정입니다.")
+
 #def HelloPrint(update, context):
 #    context.bot.sendMessage(chat_id=chat_room_id, text="hello~")
 #
@@ -141,6 +150,8 @@ def BotNaverPrinf(update, context):
 try:
     mysql.SelMysql(opt='START')
     # 아래 내용을 Class로 올려서 처리 하는건 어떨까
+    updater.dispatcher.add_handler(CommandHandler("help", HelpPrint))
+    updater.dispatcher.add_handler(CommandHandler("HELP", HelpPrint))
     updater.dispatcher.add_handler(CommandHandler('SET', BotSetPrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('set', BotSetPrinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('GOOGLE', BotGooglePrinf, pass_args=True))
@@ -151,10 +162,10 @@ try:
     updater.dispatcher.add_handler(CommandHandler('naver', BotNaverPrinf, pass_args=True))
     mysql.SelMysql(opt='END')
     err = traceback.format_exc()
-    Errlog.SaveLog('ERR : '+str(err))
+    Errlog.SaveLog(str(err))
 except Exception:
     err = traceback.format_exc()
-    Errlog.SaveLog('ERR : '+str(err))
+    Errlog.SaveLog(str(err))
 ########################################################################################################################
 
 ########################################################################################################################
