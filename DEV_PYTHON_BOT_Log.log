@@ -28,3 +28,25 @@ AttributeError: module 'mysql' has no attribute 'SelMysq'
 
 [16348 | 15868 | ERROR | Errlog.py:37] 2022-04-16 03:18:14,822: ERR : NoneType: None
 
+[26024 | 9988 | ERROR | Errlog.py:37] 2022-04-16 15:29:24,553: ERR : NoneType: None
+
+[1816 | 21460 | ERROR | Errlog.py:37] 2022-04-16 15:42:20,074: ERR : Traceback (most recent call last):
+  File "K:\DEVELOPMENT\PYTHON_SAMPLE\DEV_PYTHON_BOT\Practics\Package\mysql.py", line 78, in SelMysql
+    MariaDB.StartMysql(self=MariaDB)
+  File "K:\DEVELOPMENT\PYTHON_SAMPLE\DEV_PYTHON_BOT\Practics\Package\mysql.py", line 60, in StartMysql
+    self.SetMysql()
+TypeError: SetMysql() missing 1 required positional argument: 'self'
+
+[1816 | 21460 | ERROR | Errlog.py:37] 2022-04-16 15:42:20,074: ERR : Traceback (most recent call last):
+  File "K:\DEVELOPMENT\PYTHON_SAMPLE\DEV_PYTHON_BOT\Practics\Package\mysql.py", line 80, in SelMysql
+    MariaDB.EndMysql(self=MariaDB)
+  File "K:\DEVELOPMENT\PYTHON_SAMPLE\DEV_PYTHON_BOT\Practics\Package\mysql.py", line 66, in EndMysql
+    self.SetMysql()
+TypeError: SetMysql() missing 1 required positional argument: 'self'
+
+[1816 | 21460 | ERROR | Errlog.py:37] 2022-04-16 15:42:20,074: ERR : NoneType: None
+
+[23792 | 22664 | ERROR | Errlog.py:37] 2022-04-16 15:45:57,702: ERR : NoneType: None
+
+[12440 | 9740 | Errlog.py:38] 2022-04-16 15:54:09,807: MESSAGE : NoneType: None
+

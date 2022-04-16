@@ -15,7 +15,8 @@ Log=logging.getLogger('DEV_PYTHON_BOT_LOG')
 # log Format
 #LogLevel = logging.ERROR
 LogFileName = './DEV_PYTHON_BOT_Log.log'
-LogFormat = logging.Formatter('[%(process)d | %(thread)d | %(levelname)s | %(filename)s:%(lineno)s] %(asctime)s: %(message)s')
+#LogFormat = logging.Formatter('[%(process)d | %(thread)d | %(levelname)s | %(filename)s:%(lineno)s] %(asctime)s: %(message)s')
+LogFormat = logging.Formatter('[%(process)d | %(thread)d | %(filename)s:%(lineno)s] %(asctime)s: %(message)s')
 
 # Console = 콘솔화면에 출력
 ConsoleHandler = logging.StreamHandler()
@@ -34,5 +35,5 @@ Log.addHandler(FileHandler)
 ########################################################################################################################
 # 호출부 구현
 def SaveLog(err):
-    Log.error('ERR : '+str(err))
+    Log.error('MESSAGE : '+str(err))
 ########################################################################################################################

@@ -6,13 +6,14 @@
 # 텔레그램 bot 채팅방ID 확인
 # https://api.telegram.org/bot5120813678:AAGz1vCMglGml4X5-eoTcFN3Y_JnWlFS6GY/getMe
 # 1984552353
+# 그룹채팅방 : -697051008
 ########################################################################################################################
 
 ########################################################################################################################
 # 파일 생성이력
 # 일자 / 작업자 / 내용
 # 2022.04.11 / 이승호 / 텔레그램봇 명령어 입출력 처리및 로그, MariaDB SELECT 호출처리
-# 2022.04.16 / 이승호 / 텔레그램봇 GitHub에 Push이벤트 발생시 DEV_PYTHON_GITHUB_BOT에서 메세지 출력처리
+# 2022.04.16 / 이승호 / 텔레그램봇 GitHub에 Push이벤트 발생시 DEV_PYTHON_GITHUB_BOT에서 메세지 출력처리(동작안됨)
 ########################################################################################################################
 
 #import telegram
@@ -33,7 +34,10 @@ import Errlog
 ## 전역변수
 # telegram token key와 chat room id 입력
 my_api_key = "5120813678:AAGz1vCMglGml4X5-eoTcFN3Y_JnWlFS6GY"
-chat_room_id = 1984552353
+#  DEV_SERVER_BOT
+#chat_room_id = 1984552353
+#  DEV_PYTHON GROUP
+chat_room_id = -697051008
 my_server_env_os = platform.system()
 my_server_env_os_det = platform.platform()
 my_server_env_os_ver = platform.version()
