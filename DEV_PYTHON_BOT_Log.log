@@ -50,3 +50,5 @@ TypeError: SetMysql() missing 1 required positional argument: 'self'
 
 [12440 | 9740 | Errlog.py:38] 2022-04-16 15:54:09,807: MESSAGE : NoneType: None
 
+[26548 | 26080 | Errlog.py:38] 2022-04-16 15:54:22,423: MESSAGE : NoneType: None
+
