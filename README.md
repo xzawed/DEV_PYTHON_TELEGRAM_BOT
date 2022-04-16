@@ -24,6 +24,8 @@
 
   '[%(process)d | %(thread)d | %(filename)s:%(lineno)s] %(asctime)s: %(message)s'  
 
+  -logging 파일 ./Practics/log/DEV_PYTHON_BOT_log.log 생성  
+
 2.mysql.py 수정  
 
   -SetMysql, CloseMysql 추가   
