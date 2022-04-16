@@ -15,3 +15,16 @@
 *mysql.py 생성  
   -현재 딱히 구현된건 없고 나중에  log관련 데이터 관리하는 테이블 생성예정
 <hr/>
+<hr/>
+2022.04.16  
+  
+1.Errlog.py 수정  
+
+  -logging 파일형식 변경
+
+  '[%(process)d | %(thread)d | %(filename)s:%(lineno)s] %(asctime)s: %(message)s'  
+
+2.mysql.py 수정  
+
+  -SetMysql, CloseMysql 추가   
+<hr/>
