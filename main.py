@@ -43,16 +43,15 @@ my_server_env_domain = "EXT IP ADDR : "+requests.get("https://api.ipify.org").te
                                   + " / domain : dirtchamber.iptime.org "
 
 # telegram bot setting
-#my_bot = telegram.Bot(my_api_key)
-#my_bot = Bot(my_api_key)
 updater = Updater(token=my_api_key, use_context=True)  # bot에게 들어온 메시지가 있는지 체크
+
 try:
     updater.dispatcher.stop()
     updater.job_queue.stop()
     updater.stop()
 except Exception:
     err = traceback.format_exc()
-    Errlog.SaveLog('ERR : '+str(err))
+    Errlog.SaveLog(str(err))
 ########################################################################################################################
 
 ########################################################################################################################
@@ -111,13 +110,15 @@ def BotSetPrinf(update, context):
     else :
         context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 은(는) 아직 설정되지 않은 단어입니다")
 
-### 아래부터는 Web crawling을 통한 웹페이티 리스트 목록을 띄우는 예제를 처리
-
+### 아래부터는 웹사이트 검색기능 처리
 def BotGooglePrinf(update, context):
     # 입력한 검색어를 키워드변수에 조합한다.
     keywords = ''
     for arg in context.args:
-        keywords += '{}'.format(arg)
+        keywords += '{}'.format(arg)+"+"
+
+    # 맨마지막 글자 1자리를 제거한다(+)문자 제거
+    keywords = keywords[:-1]
 
     context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 구글 검색")
     context.bot.sendMessage(chat_id=chat_room_id, text="https://www.google.com/search?q="+keywords)
@@ -126,10 +127,15 @@ def BotNaverPrinf(update, context):
     # 입력한 검색어를 키워드변수에 조합한다.
     keywords = ''
     for arg in context.args:
-        keywords += '{}'.format(arg)
+        keywords += '{}'.format(arg)+"+"
+
+    # 맨마지막 글자 1자리를 제거한다(+)문자 제거
+    keywords = keywords[:-1]
 
     context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 네이버 검색")
     context.bot.sendMessage(chat_id=chat_room_id, text="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="+keywords)
+
+### 아래부터는 입력받은 메세지를 번역하는 기능을 제공
 
 ### 아래부터는 주기적으로 특정메세지를 띄우는 예제를 처리
 
@@ -150,16 +156,11 @@ def BotNaverPrinf(update, context):
 try:
     mysql.SelMysql(opt='START')
     # 아래 내용을 Class로 올려서 처리 하는건 어떨까
-    updater.dispatcher.add_handler(CommandHandler("help", HelpPrint))
-    updater.dispatcher.add_handler(CommandHandler("HELP", HelpPrint))
-    updater.dispatcher.add_handler(CommandHandler('SET', BotSetPrinf, pass_args=True))
-    updater.dispatcher.add_handler(CommandHandler('set', BotSetPrinf, pass_args=True))
-    updater.dispatcher.add_handler(CommandHandler('GOOGLE', BotGooglePrinf, pass_args=True))
-    updater.dispatcher.add_handler(CommandHandler('Google', BotGooglePrinf, pass_args=True))
-    updater.dispatcher.add_handler(CommandHandler('google', BotGooglePrinf, pass_args=True))
-    updater.dispatcher.add_handler(CommandHandler('NAVER', BotNaverPrinf, pass_args=True))
-    updater.dispatcher.add_handler(CommandHandler('Naver', BotNaverPrinf, pass_args=True))
-    updater.dispatcher.add_handler(CommandHandler('naver', BotNaverPrinf, pass_args=True))
+    updater.dispatcher.add_handler(CommandHandler("help".upper(), HelpPrint))
+    updater.dispatcher.add_handler(CommandHandler('set'.upper(), BotSetPrinf, pass_args=True))
+    updater.dispatcher.add_handler(CommandHandler('google'.upper(), BotGooglePrinf, pass_args=True))
+    updater.dispatcher.add_handler(CommandHandler('naver'.upper(), BotNaverPrinf, pass_args=True))
+
     mysql.SelMysql(opt='END')
     err = traceback.format_exc()
     Errlog.SaveLog(str(err))
