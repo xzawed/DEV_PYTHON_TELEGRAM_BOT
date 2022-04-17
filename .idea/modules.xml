@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/DEV_PYTHON_BOT.iml" filepath="$PROJECT_DIR$/.idea/DEV_PYTHON_BOT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/DEV_PYTHON_TELEGRAM_BOT.iml" filepath="$PROJECT_DIR$/.idea/DEV_PYTHON_TELEGRAM_BOT.iml" />
     </modules>
   </component>
 </project>
