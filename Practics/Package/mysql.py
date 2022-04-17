@@ -1,27 +1,29 @@
 ########################################################################################################################
-# 파일 생성이력
-# 일자 / 작업자 / 내용
-# 2022.04.11 / 이승호 / MariaDB내에 텔레그램 메세지및 로그기록 정보를 저장하기 위함
+#  파일 생성이력
+#  일자 / 작업자 / 내용
+#  2022.04.11 / 이승호 / MariaDB내에 텔레그램 메세지및 로그기록 정보를 저장하기 위함
 ########################################################################################################################
 
-# 텔레그램봇에서 발생한 송수신한 정보를 DB기록하기 위한 처리부
-import pymysql # MariaDB
-import traceback # traceback 프로그램 에러
+#  텔레그램봇에서 발생한 송수신한 정보를 DB기록하기 위한 처리부
+#  MariaDB
+import pymysql
+#  traceback 프로그램 에러
+import traceback
 
-# 개별적으로 생성한내용
+#  개별적으로 생성한내용
 import Errlog
 
-# connection 정보
-# host= 연결주소 ip or 도메인
-# port = 포트번호
-# user = ID
-# password = 암호
-# db = 데이터베이스명
-# charset = 'utf8',
-# autocommit = 자동으로 commit 처리할지 여부
-# cursorclass = 커서타입 ( https://pymysql.readthedocs.io/en/latest/modules/cursors.html ) 참조
+#  connection 정보
+#  host= 연결주소 ip or 도메인
+#  port = 포트번호
+#  user = ID
+#  password = 암호
+#  db = 데이터베이스명
+#  charset = 'utf8',
+#  autocommit = 자동으로 commit 처리할지 여부
+#  cursorclass = 커서타입 ( https://pymysql.readthedocs.io/en/latest/modules/cursors.html ) 참조
 ########################################################################################################################
-## 전역변수
+#  전역변수
 """
 db = pymysql.connect(
     host='dirtchamber.iptime.org',  # host name (연결주소)
@@ -39,17 +41,17 @@ curs = db.cursor()
 ########################################################################################################################
 
 ########################################################################################################################
-# 호출부 구현
-# class개념
+#  호출부 구현
+#  class개념
 class MariaDB:
-    # MariaDB setting
-    def SessionMysql(self):
+    #  MariaDB setting
+    def sessionmysql(self):
         self.db = pymysql.connect(
-                                    host='dirtchamber.iptime.org',  # host name (연결주소)
+                                    host='dirtchamber.iptime.org',
                                     port=13306,
-                                    user='root',  # user name (ID)
-                                    password='root',  # password (암호)
-                                    db='DEV_MARIADB',  # db name (데이터베이스명)
+                                    user='root',
+                                    password='root',
+                                    db='DEV_MARIADB',
                                     charset='utf8',
                                     autocommit=False,
                                     cursorclass=pymysql.cursors.DictCursor
@@ -57,34 +59,34 @@ class MariaDB:
         #  DB와 관련된 커서 객체를 생성한다
         self.curs = self.db.cursor()
 
-    # MariaDB 연결이후 SELECT, UPDATE, INSERT, DELETE 에 해당되는 내용을 호출처리
-    def StartMysql(self):
+    #  MariaDB 연결이후 SELECT, UPDATE, INSERT, DELETE 에 해당되는 내용을 호출처리
+    def startmysql(self):
         sql = "SELECT 'A';"
         self.curs.execute(sql)
         print("정상적으로 시작 되었습니다.")
 
-    def EndMysql(self):
+    def endmysql(self):
         sql = "SELECT 'A';"
         self.curs.execute(sql)
         print("정상적으로 종료 되었습니다.")
 
-    # MariaDB Close
-    def CloseMysql(self):
+    #  MariaDB Close
+    def closemysql(self):
         self.curs.close()
 ########################################################################################################################
 
 ########################################################################################################################
 #  전역함수처리(외부에서 호출할때 쓰임)
-def SelMysql(opt):
+def selmysql(opt):
     try:
-        MariaDB.SessionMysql(self=MariaDB)
+        MariaDB.sessionmysql(self=MariaDB)
 
         if   opt == "START":
-            MariaDB.StartMysql(self=MariaDB)
+            MariaDB.startmysql(self=MariaDB)
         elif opt == "END":
-            MariaDB.EndMysql(self=MariaDB)
+            MariaDB.endmysql(self=MariaDB)
 
-        MariaDB.CloseMysql(self=MariaDB)
+        MariaDB.closemysql(self=MariaDB)
     except Exception:
         err = traceback.format_exc()
         Errlog.SaveLog(str(err))
