@@ -91,6 +91,9 @@ def BotSetPrinf(update, context):
         for arg in context.args:
             keywords += '{}'.format(arg)+" "
 
+        # 맨마지막 글자 1자리를 제거한다(+)문자 제거
+        keywords = keywords[:-1]
+
     #    context.bot.sendMessage(chat_id=chat_room_id, text=keywords)
         # 하단내용은 상단의 내용이 문제가 해결된 이후에 수정해야할듯..
         # 2022-04-09 : 상단에서 입력받은 값을 토대로 해당되는 결과값을 Return 한다.
