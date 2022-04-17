@@ -10,7 +10,7 @@ import logging # log기록
 ########################################################################################################################
 ## 전역변수
 # log 설정
-Log=logging.getLogger('DEV_PYTHON_BOT_LOG')
+Log=logging.getLogger('DEV_PYTHON_TELEGRAM_BOT_LOG')
 
 # log Format
 #LogLevel = logging.ERROR
