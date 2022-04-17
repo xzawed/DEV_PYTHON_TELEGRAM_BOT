@@ -5,8 +5,8 @@
 
 # 텔레그램 bot 채팅방ID 확인
 # https://api.telegram.org/bot5120813678:AAGz1vCMglGml4X5-eoTcFN3Y_JnWlFS6GY/getMe
-# 1984552353
-# -697051008
+# 개인 : 1984552353
+# 그룹 : -697051008
 ########################################################################################################################
 
 ########################################################################################################################
@@ -94,7 +94,7 @@ def BotSetPrinf(update, context):
         # 맨마지막 글자 1자리를 제거한다(+)문자 제거
         keywords = keywords[:-1]
 
-    #    context.bot.sendMessage(chat_id=chat_room_id, text=keywords)
+        # context.bot.sendMessage(chat_id=chat_room_id, text=keywords)
         # 하단내용은 상단의 내용이 문제가 해결된 이후에 수정해야할듯..
         # 2022-04-09 : 상단에서 입력받은 값을 토대로 해당되는 결과값을 Return 한다.
         if   keywords == "hi":
