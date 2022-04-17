@@ -182,7 +182,7 @@ def botgoogletranprinf(update, context):
 #  기능과 명령어 연결("/hi" 명령어가 들어오면 TestPrint 함수가 실행됨)
 #  참고로 한글명령어가 안됨.
 try:
-    mysql.SelMysql(opt='START')
+    mysql.selmysql(opt='START')
     #  아래 내용을 어떻게 정리를 하면 좋을까..
     #  command값을 upper로 일괄 변환해서 실행처리 가능할지 모르겠음.
     updater.dispatcher.add_handler(CommandHandler("help".upper(), helpprint))
@@ -191,7 +191,7 @@ try:
     updater.dispatcher.add_handler(CommandHandler('naver'.upper(), botnaverprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('tran'.upper(), botgoogletranprinf, pass_args=True))
 
-    mysql.SelMysql(opt='END')
+    mysql.selmysql(opt='END')
     err = traceback.format_exc()
     Errlog.SaveLog(str(err))
 except Exception:
