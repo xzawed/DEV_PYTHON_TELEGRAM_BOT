@@ -7,7 +7,7 @@
 2.Errlog.py 생성  
 
   -logging 레벨 ERROR   
-  -logging 파일 ./DEV_PYTHON_BOT_log.log 생성  
+  -logging 파일 ./DEV_PYTHON_TELEGRAM_BOT_log.log 생성  
   -logging 파일형식  
 
   '[%(process)d | %(thread)d | %(levelname)s | %(filename)s:%(lineno)s] %(asctime)s: %(message)s'  
@@ -24,7 +24,7 @@
 
   '[%(process)d | %(thread)d | %(filename)s:%(lineno)s] %(asctime)s: %(message)s'  
 
-  -logging 파일 ./Practics/log/DEV_PYTHON_BOT_log.log 생성  
+  -logging 파일 ./Practics/log/DEV_PYTHON_TELEGRAM_BOT_log.log 생성  
 
 2.mysql.py 수정  
 
