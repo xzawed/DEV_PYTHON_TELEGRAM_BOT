@@ -97,12 +97,9 @@ def botsetprinf(update, context):
         keywords = keywords[:-1]
 
         #  context.bot.sendMessage(chat_id=chat_room_id, text=keywords)
-        #  하단내용은 상단의 내용이 문제가 해결된 이후에 수정해야할듯..
         #  2022-04-09 : 상단에서 입력받은 값을 토대로 해당되는 결과값을 Return 한다.
         if   keywords == "hi":
             context.bot.sendMessage(chat_id=chat_room_id, text="hello~")
-        elif keywords == "토큰":
-            context.bot.sendMessage(chat_id=chat_room_id, text="텔레그램봇 Token값은 ( "+str(my_api_key)+" ) 입니다.")
         elif keywords == "서버":
             context.bot.sendMessage(chat_id=chat_room_id, text=" ***텔레그램 BOT 개발서버 정보*** " + "\n"
                                                              + " OS : " + str(my_server_env_os) + "\n\n"
@@ -183,8 +180,7 @@ def botgoogletranprinf(update, context):
 #  참고로 한글명령어가 안됨.
 try:
     mysql.selmysql(opt='START')
-    #  아래 내용을 어떻게 정리를 하면 좋을까..
-    #  command값을 upper로 일괄 변환해서 실행처리 가능할지 모르겠음.
+    #  command값을 upper로 일괄 변환해서 실행처리
     updater.dispatcher.add_handler(CommandHandler("help".upper(), helpprint))
     updater.dispatcher.add_handler(CommandHandler('set'.upper(), botsetprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('google'.upper(), botgoogleprinf, pass_args=True))
