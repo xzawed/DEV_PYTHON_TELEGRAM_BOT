@@ -45,7 +45,7 @@ import Errlog
 ########################################################################################################################
 #  전역변수
 #  telegram token key와 chat room id 입력
-my_api_key = "5120813678:AAGz1vCMglGml4X5-eoTcFN3Y_JnWlFS6GY"
+my_api_key = mysql.selmysql(opt='TOKEN')
 chat_room_id = -697051008
 my_server_env_os = platform.system()
 my_server_env_os_det = platform.platform()

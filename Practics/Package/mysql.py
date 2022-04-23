@@ -70,6 +70,17 @@ class MariaDB:
         self.curs.execute(sql)
         print("정상적으로 종료 되었습니다.")
 
+    def tokenmysql(self):
+        sql = "SELECT TOKEN FROM BOT_TOKEN WHERE COMCD = %s AND BOT_ID = %s; "
+        self.curs.execute(sql, ('TELEGRAM', '@xzawed_bot'))
+        token_list = self.curs.fetchall()
+
+        for x in token_list:
+            #  print(x['TOKEN'])
+            xzawed_token = x['TOKEN']
+
+        return xzawed_token
+
     #  MariaDB Close
     def closemysql(self):
         self.curs.close()
@@ -79,14 +90,19 @@ class MariaDB:
 #  전역함수처리(외부에서 호출할때 쓰임)
 def selmysql(opt):
     try:
+        result = ""
         MariaDB.sessionmysql(self=MariaDB)
 
         if   opt == "START":
             MariaDB.startmysql(self=MariaDB)
         elif opt == "END":
             MariaDB.endmysql(self=MariaDB)
+        elif opt == "TOKEN":
+            result = MariaDB.tokenmysql(self=MariaDB)
 
         MariaDB.closemysql(self=MariaDB)
+
+        return result
     except Exception:
         err = traceback.format_exc()
         Errlog.SaveLog(str(err))
