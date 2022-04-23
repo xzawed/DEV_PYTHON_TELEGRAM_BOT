@@ -81,6 +81,11 @@ class MariaDB:
 
         return xzawed_token
 
+    def logmysql(self,data):
+        sql = "INSERT INTO TELEGRAM_BOT_LOG ( SEQ, WRITE_DATE, STATE, LOG ) VALUES ( nextval(JOB_LOG_SEQ) SYSDATE(), %s, %s ) "
+        self.curs.execute(sql, data)
+        self.db.commit()
+
     #  MariaDB Close
     def closemysql(self):
         self.curs.close()
@@ -88,19 +93,21 @@ class MariaDB:
 
 ########################################################################################################################
 #  전역함수처리(외부에서 호출할때 쓰임)
-def selmysql(opt):
+def selmysql(opt, data):
     try:
         result = ""
-        MariaDB.sessionmysql(self=MariaDB)
+        MariaDB.sessionmysql(MariaDB)
 
         if   opt == "START":
-            MariaDB.startmysql(self=MariaDB)
+            MariaDB.startmysql(MariaDB)
         elif opt == "END":
-            MariaDB.endmysql(self=MariaDB)
+            MariaDB.endmysql(MariaDB)
         elif opt == "TOKEN":
-            result = MariaDB.tokenmysql(self=MariaDB)
+            result = MariaDB.tokenmysql(MariaDB)
+        elif opt == "LOG":
+            MariaDB.logmysql(MariaDB, data)
 
-        MariaDB.closemysql(self=MariaDB)
+        MariaDB.closemysql(MariaDB)
 
         return result
     except Exception:
