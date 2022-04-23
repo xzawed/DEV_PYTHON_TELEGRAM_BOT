@@ -47,7 +47,7 @@ class MariaDB:
     #  MariaDB setting
     def sessionmysql(self):
         self.db = pymysql.connect(
-                                    host='dirtchamber.iptime.org',
+                                    host='xzawed.iptime.org',
                                     port=13306,
                                     user='root',
                                     password='root',
