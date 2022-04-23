@@ -82,7 +82,7 @@ class MariaDB:
         return xzawed_token
 
     def logmysql(self,data):
-        sql = "INSERT INTO TELEGRAM_BOT_LOG ( SEQ, WRITE_DATE, STATE, LOG ) VALUES ( nextval(JOB_LOG_SEQ), SYSDATE(), %s, %s ) "
+        sql = "INSERT INTO BOT_LOG ( SEQ, WRITE_DATE, STATE, LOG, COMCD ) VALUES ( nextval(JOB_LOG_SEQ), SYSDATE(), %s, %s, 'TELEGRAM' ) "
         self.curs.execute(sql, data)
         self.db.commit()
 
