@@ -60,19 +60,19 @@ class MariaDB:
         self.curs = self.db.cursor()
 
     #  MariaDB 연결이후 SELECT, UPDATE, INSERT, DELETE 에 해당되는 내용을 호출처리
-    def startmysql(self):
-        sql = "SELECT 'A';"
-        self.curs.execute(sql)
-        print("정상적으로 시작 되었습니다.")
+    def tempmysql(self,data):
+        sql = "SELECT %s RESULT;"
+        self.curs.execute(sql, data)
+        result = self.curs.fetchall()
+        for x in result:
+            #  print(x['TOKEN'])
+            message = x['RESULT']
 
-    def endmysql(self):
-        sql = "SELECT 'A';"
-        self.curs.execute(sql)
-        print("정상적으로 종료 되었습니다.")
+        print("정상적으로 "+message+" 되었습니다.")
 
-    def tokenmysql(self):
+    def tokenmysql(self,data):
         sql = "SELECT TOKEN FROM BOT_TOKEN WHERE COMCD = %s AND BOT_ID = %s; "
-        self.curs.execute(sql, ('TELEGRAM', '@xzawed_bot'))
+        self.curs.execute(sql, data)
         token_list = self.curs.fetchall()
 
         for x in token_list:
@@ -82,7 +82,7 @@ class MariaDB:
         return xzawed_token
 
     def logmysql(self,data):
-        sql = "INSERT INTO TELEGRAM_BOT_LOG ( SEQ, WRITE_DATE, STATE, LOG ) VALUES ( nextval(JOB_LOG_SEQ) SYSDATE(), %s, %s ) "
+        sql = "INSERT INTO TELEGRAM_BOT_LOG ( SEQ, WRITE_DATE, STATE, LOG ) VALUES ( nextval(JOB_LOG_SEQ), SYSDATE(), %s, %s ) "
         self.curs.execute(sql, data)
         self.db.commit()
 
@@ -98,12 +98,10 @@ def selmysql(opt, data):
         result = ""
         MariaDB.sessionmysql(MariaDB)
 
-        if   opt == "START":
-            MariaDB.startmysql(MariaDB)
-        elif opt == "END":
-            MariaDB.endmysql(MariaDB)
+        if   opt == "TEMP":
+            MariaDB.tempmysql(MariaDB, data)
         elif opt == "TOKEN":
-            result = MariaDB.tokenmysql(MariaDB)
+            result = MariaDB.tokenmysql(MariaDB, data)
         elif opt == "LOG":
             MariaDB.logmysql(MariaDB, data)
 
@@ -112,5 +110,5 @@ def selmysql(opt, data):
         return result
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog(str(err))
+        Errlog.SaveLog('ERROR',str(err))
 ########################################################################################################################

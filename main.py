@@ -45,7 +45,7 @@ import Errlog
 ########################################################################################################################
 #  전역변수
 #  telegram token key와 chat room id 입력
-my_api_key = mysql.selmysql(opt='TOKEN')
+my_api_key = mysql.selmysql('TOKEN',('TELEGRAM', '@xzawed_bot'))
 chat_room_id = -697051008
 my_server_env_os = platform.system()
 my_server_env_os_det = platform.platform()
@@ -64,14 +64,14 @@ try:
     updater.stop()
 except Exception:
     err = traceback.format_exc()
-    Errlog.SaveLog(str(err))
+    Errlog.SaveLog('ERROR',str(err))
 ########################################################################################################################
 
 ########################################################################################################################
 #  응답부 구현
 #  명령어와 연결할 기능 구현
 #  아래부터는 특정 커맨드를 입력받으면 출력을 처리하는 단일커맨드 예제를 처리
-def helpprint(update, context):
+def helpprinf(update, context):
     try:
         context.bot.sendMessage(chat_id=chat_room_id, text=" *** 사용가능한 명령어 리스트 입니다 *** " + "\n\n" +
                                                            " '/help' : 도움말 기능입니다. " + "\n\n" +
@@ -82,7 +82,7 @@ def helpprint(update, context):
                                                            " 그외 여러 기능들이 추가로 개발될 예정입니다.")
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog(str(err))
+        Errlog.SaveLog('ERROR',str(err))
 
 #  아래부터는 특정 키워드를 입력받으면 출력을 처리하는 단일커맨드 예제를 처리
 #  (if 문을 이용한 처리 예제)
@@ -112,7 +112,7 @@ def botsetprinf(update, context):
             context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 은(는) 아직 설정되지 않은 단어입니다")
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog(str(err))
+        Errlog.SaveLog('ERROR',str(err))
 
 #  아래부터는 웹사이트 검색기능 처리
 def botgoogleprinf(update, context):
@@ -129,7 +129,7 @@ def botgoogleprinf(update, context):
         context.bot.sendMessage(chat_id=chat_room_id, text="https://www.google.com/search?q="+keywords)
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog(str(err))
+        Errlog.SaveLog('ERROR',str(err))
 
 def botnaverprinf(update, context):
     try:
@@ -145,7 +145,7 @@ def botnaverprinf(update, context):
         context.bot.sendMessage(chat_id=chat_room_id, text="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="+keywords)
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog(str(err))
+        Errlog.SaveLog('ERROR',str(err))
 
 #  아래부터는 입력받은 메세지를 번역하는 기능을 제공
 def botgoogletranprinf(update, context):
@@ -167,7 +167,7 @@ def botgoogletranprinf(update, context):
         context.bot.sendMessage(chat_id=chat_room_id, text=sentence)
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog(str(err))
+        Errlog.SaveLog('ERROR',str(err))
 
 #  아래부터는 주기적으로 특정메세지를 띄우는 예제를 처리
 
@@ -179,20 +179,20 @@ def botgoogletranprinf(update, context):
 #  기능과 명령어 연결("/hi" 명령어가 들어오면 TestPrint 함수가 실행됨)
 #  참고로 한글명령어가 안됨.
 try:
-    mysql.selmysql(opt='START')
+    mysql.selmysql('TEMP','실행')
     #  command값을 upper로 일괄 변환해서 실행처리
-    updater.dispatcher.add_handler(CommandHandler("help".upper(), helpprint))
+    updater.dispatcher.add_handler(CommandHandler("help".upper(), helpprinf))
     updater.dispatcher.add_handler(CommandHandler('set'.upper(), botsetprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('google'.upper(), botgoogleprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('naver'.upper(), botnaverprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('tran'.upper(), botgoogletranprinf, pass_args=True))
 
-    mysql.selmysql(opt='END')
+    mysql.selmysql('TEMP','대기')
     err = traceback.format_exc()
-    Errlog.SaveLog(str(err))
+    Errlog.SaveLog('INFO',str(err))
 except Exception:
     err = traceback.format_exc()
-    Errlog.SaveLog(str(err))
+    Errlog.SaveLog('ERROR',str(err))
 ########################################################################################################################
 
 ########################################################################################################################
