@@ -53,7 +53,7 @@ my_server_env_os_ver = platform.version()
 my_server_env_cpu = platform.processor()
 my_server_env_cpu_cnt = multiprocessing.cpu_count()
 my_server_env_domain = "EXT IP ADDR : "+requests.get("https://api.ipify.org").text \
-                                  + " / domain : dirtchamber.iptime.org "
+                                  + " / domain : xzawed.iptime.org "
 
 #  telegram bot setting
 updater = Updater(token=my_api_key, use_context=True)  # bot에게 들어온 메시지가 있는지 체크
