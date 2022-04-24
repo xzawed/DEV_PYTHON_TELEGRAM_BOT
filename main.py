@@ -45,7 +45,7 @@ import Errlog
 ########################################################################################################################
 #  전역변수
 #  telegram token key와 chat room id 입력
-my_api_key = mysql.selmysql('TOKEN',('TELEGRAM', '@xzawed_bot'))
+my_api_key = mysql.selmysql('TOKEN', ('TELEGRAM', '@xzawed_bot'))
 chat_room_id = -697051008
 my_server_env_os = platform.system()
 my_server_env_os_det = platform.platform()
@@ -54,7 +54,6 @@ my_server_env_cpu = platform.processor()
 my_server_env_cpu_cnt = multiprocessing.cpu_count()
 my_server_env_domain = "EXT IP ADDR : "+requests.get("https://api.ipify.org").text \
                                   + " / domain : xzawed.iptime.org "
-
 #  telegram bot setting
 updater = Updater(token=my_api_key, use_context=True)  # bot에게 들어온 메시지가 있는지 체크
 
@@ -64,7 +63,7 @@ try:
     updater.stop()
 except Exception:
     err = traceback.format_exc()
-    Errlog.SaveLog('ERROR',str(err))
+    Errlog.saveLog('ERROR', str(err))
 ########################################################################################################################
 
 ########################################################################################################################
@@ -78,11 +77,11 @@ def helpprinf(update, context):
                                                            " '/set' : hi,토큰,서버에 대한 정보를 제공합니다. " + "\n\n" +
                                                            " '/google' : 구글에서 검색한 결과 url정보를 제공합니다. " + "\n\n" +
                                                            " '/naver' : 네이버에서 검색한 결과 url정보를 제공합니다. " + "\n\n" +
-                                                           " '/tran' : 구글번역을 통한 한글을 영문으로 변환하여 출력합니다(추후 기능추가). " + "\n\n" +
+                                                           " '/tran' : 구글번역을 통한 한글을 영문으로 변환하여 출력합니다. " + "\n\n" +
                                                            " 그외 여러 기능들이 추가로 개발될 예정입니다.")
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog('ERROR',str(err))
+        Errlog.saveLog('ERROR', str(err))
 
 #  아래부터는 특정 키워드를 입력받으면 출력을 처리하는 단일커맨드 예제를 처리
 #  (if 문을 이용한 처리 예제)
@@ -112,7 +111,7 @@ def botsetprinf(update, context):
             context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 은(는) 아직 설정되지 않은 단어입니다")
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog('ERROR',str(err))
+        Errlog.saveLog('ERROR', str(err))
 
 #  아래부터는 웹사이트 검색기능 처리
 def botgoogleprinf(update, context):
@@ -124,12 +123,12 @@ def botgoogleprinf(update, context):
 
         #  맨마지막 글자 1자리를 제거한다(+)문자 제거
         keywords = keywords[:-1]
-
+        url = "https://www.google.com/search?q="
         context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 구글 검색")
-        context.bot.sendMessage(chat_id=chat_room_id, text="https://www.google.com/search?q="+keywords)
+        context.bot.sendMessage(chat_id=chat_room_id, text=url+keywords)
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog('ERROR',str(err))
+        Errlog.saveLog('ERROR', str(err))
 
 def botnaverprinf(update, context):
     try:
@@ -140,12 +139,12 @@ def botnaverprinf(update, context):
 
         #  맨마지막 글자 1자리를 제거한다(+)문자 제거
         keywords = keywords[:-1]
-
+        url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="
         context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 네이버 검색")
-        context.bot.sendMessage(chat_id=chat_room_id, text="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="+keywords)
+        context.bot.sendMessage(chat_id=chat_room_id, text=url+keywords)
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog('ERROR',str(err))
+        Errlog.saveLog('ERROR', str(err))
 
 #  아래부터는 입력받은 메세지를 번역하는 기능을 제공
 def botgoogletranprinf(update, context):
@@ -158,7 +157,7 @@ def botgoogletranprinf(update, context):
         translator = Translator()
 
         #  번역대상 언어와 번역처리 언어를 추후 사용자가 지정할수 있게 처리 예정.
-        content = translator.translate(keywords,src='ko',dest='en')
+        content = translator.translate(keywords, src='ko', dest='en')
 
         #  번역한 문장을 변수처리
         sentence = content.text
@@ -167,7 +166,7 @@ def botgoogletranprinf(update, context):
         context.bot.sendMessage(chat_id=chat_room_id, text=sentence)
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog('ERROR',str(err))
+        Errlog.saveLog('ERROR', str(err))
 
 #  아래부터는 주기적으로 특정메세지를 띄우는 예제를 처리
 
@@ -179,7 +178,7 @@ def botgoogletranprinf(update, context):
 #  기능과 명령어 연결("/hi" 명령어가 들어오면 TestPrint 함수가 실행됨)
 #  참고로 한글명령어가 안됨.
 try:
-    mysql.selmysql('TEMP','실행')
+    mysql.selmysql('TEMP', '실행')
     #  command값을 upper로 일괄 변환해서 실행처리
     updater.dispatcher.add_handler(CommandHandler("help".upper(), helpprinf))
     updater.dispatcher.add_handler(CommandHandler('set'.upper(), botsetprinf, pass_args=True))
@@ -187,12 +186,12 @@ try:
     updater.dispatcher.add_handler(CommandHandler('naver'.upper(), botnaverprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('tran'.upper(), botgoogletranprinf, pass_args=True))
 
-    mysql.selmysql('TEMP','대기')
+    mysql.selmysql('TEMP', '대기')
     err = traceback.format_exc()
-    Errlog.SaveLog('INFO',str(err))
+    Errlog.saveLog('INFO', str(err))
 except Exception:
     err = traceback.format_exc()
-    Errlog.SaveLog('ERROR',str(err))
+    Errlog.saveLog('ERROR', str(err))
 ########################################################################################################################
 
 ########################################################################################################################
@@ -200,4 +199,3 @@ except Exception:
 updater.start_polling()
 updater.idle()
 ########################################################################################################################
-

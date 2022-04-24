@@ -60,7 +60,7 @@ class MariaDB:
         self.curs = self.db.cursor()
 
     #  MariaDB 연결이후 SELECT, UPDATE, INSERT, DELETE 에 해당되는 내용을 호출처리
-    def tempmysql(self,data):
+    def tempmysql(self, data):
         sql = "SELECT %s RESULT;"
         self.curs.execute(sql, data)
         result = self.curs.fetchall()
@@ -70,7 +70,7 @@ class MariaDB:
 
         print("정상적으로 "+message+" 되었습니다.")
 
-    def tokenmysql(self,data):
+    def tokenmysql(self, data):
         sql = "SELECT TOKEN FROM BOT_TOKEN WHERE COMCD = %s AND BOT_ID = %s; "
         self.curs.execute(sql, data)
         token_list = self.curs.fetchall()
@@ -81,7 +81,7 @@ class MariaDB:
 
         return xzawed_token
 
-    def logmysql(self,data):
+    def logmysql(self, data):
         sql = "INSERT INTO BOT_LOG ( SEQ, WRITE_DATE, STATE, LOG, COMCD ) VALUES ( nextval(JOB_LOG_SEQ), SYSDATE(), %s, %s, 'TELEGRAM' ) "
         self.curs.execute(sql, data)
         self.db.commit()
@@ -110,5 +110,5 @@ def selmysql(opt, data):
         return result
     except Exception:
         err = traceback.format_exc()
-        Errlog.SaveLog('ERROR',str(err))
+        Errlog.saveLog('ERROR', str(err))
 ########################################################################################################################
