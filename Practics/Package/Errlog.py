@@ -19,7 +19,7 @@ Log = logging.getLogger('DEV_PYTHON_TELEGRAM_BOT_LOG')
 #  LogLevel = logging.ERROR
 LogFileName = './Practics/log/DEV_PYTHON_TELEGRAM_BOT_Log.log'
 #  LogFormat = logging.Formatter('[%(process)d | %(thread)d | %(levelname)s | %(filename)s:%(lineno)s] %(asctime)s: %(message)s')
-LogFormat = logging.Formatter('[%(process)d | %(thread)d | %(filename)s:%(lineno)s] %(asctime)s: %(message)s')
+LogFormat = logging.Formatter('TELEGRAM|[%(process)d | %(thread)d | %(filename)s:%(lineno)s] %(asctime)s: %(message)s')
 
 #  Console = 콘솔화면에 출력
 ConsoleHandler = logging.StreamHandler()

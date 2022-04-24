@@ -178,7 +178,6 @@ def botgoogletranprinf(update, context):
 #  기능과 명령어 연결("/hi" 명령어가 들어오면 TestPrint 함수가 실행됨)
 #  참고로 한글명령어가 안됨.
 try:
-    mysql.selmysql('TEMP', '실행')
     #  command값을 upper로 일괄 변환해서 실행처리
     updater.dispatcher.add_handler(CommandHandler("help".upper(), helpprinf))
     updater.dispatcher.add_handler(CommandHandler('set'.upper(), botsetprinf, pass_args=True))
@@ -186,7 +185,8 @@ try:
     updater.dispatcher.add_handler(CommandHandler('naver'.upper(), botnaverprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('tran'.upper(), botgoogletranprinf, pass_args=True))
 
-    mysql.selmysql('TEMP', '대기')
+    mysql.selmysql('TEMP', '실행')
+
     err = traceback.format_exc()
     Errlog.saveLog('INFO', str(err))
 except Exception:
