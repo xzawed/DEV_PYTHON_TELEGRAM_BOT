@@ -39,6 +39,9 @@ import requests
 #  traceback 프로그램 에러
 import traceback
 
+#  SSH접속
+import paramiko
+
 #  개별적으로 생성한내용
 import mysql
 import Errlog
@@ -65,6 +68,23 @@ except Exception:
     err = traceback.format_exc()
     Errlog.saveLog('ERROR', str(err))
 ########################################################################################################################
+
+def execCommands():
+    #  SSH 클라이언트 접속 - 추후 해당내용은 DB에서 불러오는 내용으로 수정예정
+    cli = paramiko.SSHClient()
+    cli.set_missing_host_key_policy(paramiko.AutoAddPolicy)
+    cli.connect("xzawed.iptime.org", port=2153, username="devuser", password="devuser11!")
+
+    #   명령어 실행
+    stdin, stdout, stderr = cli.exec_command("jupyter-notebook list")
+    #   실행한 명령어에 대한 결과 텍스트
+    lines = stdout.readlines()
+    resultData = ''.join(lines)
+
+    print(resultData)  # 결과 확인
+
+    return resultData
+
 
 ########################################################################################################################
 #  응답부 구현
@@ -107,6 +127,9 @@ def botsetprinf(update, context):
                                                              + "         " + str(my_server_env_domain) + "\n\n"
                                                              + " CPU : " + str(my_server_env_cpu) + "\n\n"
                                                              + " CPU 갯수 : " + str(my_server_env_cpu_cnt))
+        elif keywords == "주피터토큰":
+            jupyter_token = execCommands()
+            context.bot.sendMessage(chat_id=chat_room_id, text=" jupyter token : "+jupyter_token)
         else :
             context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 은(는) 아직 설정되지 않은 단어입니다")
     except Exception:
