@@ -7,8 +7,6 @@
 #  텔레그램봇에서 발생한 송수신한 정보를 DB기록하기 위한 처리부
 #  MariaDB
 import pymysql
-#  traceback 프로그램 에러
-import traceback
 
 #  개별적으로 생성한내용
 import Errlog
@@ -109,6 +107,5 @@ def selmysql(opt, data):
 
         return result
     except Exception:
-        err = traceback.format_exc()
-        Errlog.saveLog('ERROR', str(err))
+        Errlog.saveLog('ERROR')
 ########################################################################################################################

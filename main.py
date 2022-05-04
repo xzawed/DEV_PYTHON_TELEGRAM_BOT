@@ -36,16 +36,16 @@ import platform
 #  import socket
 import multiprocessing
 import requests
-#  traceback 프로그램 에러
-import traceback
 
 #  SSH접속
+#  cryptography ver: 36.0.2 down
 import paramiko
 
 #  개별적으로 생성한내용
 import mysql
 import Errlog
 ########################################################################################################################
+
 #  전역변수
 #  telegram token key와 chat room id 입력
 my_api_key = mysql.selmysql('TOKEN', ('TELEGRAM', '@xzawed_bot'))
@@ -65,26 +65,28 @@ try:
     updater.job_queue.stop()
     updater.stop()
 except Exception:
-    err = traceback.format_exc()
-    Errlog.saveLog('ERROR', str(err))
+    Errlog.saveLog('ERROR')
+
 ########################################################################################################################
 
 def execCommands():
     #  SSH 클라이언트 접속 - 추후 해당내용은 DB에서 불러오는 내용으로 수정예정
     cli = paramiko.SSHClient()
     cli.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-    cli.connect("xzawed.iptime.org", port=2153, username="devuser", password="devuser11!")
+    #  pwd = getpass.getpass("devuser11!")
+    cli.connect("xzawed.iptime.org", port=2153, username="devuser", password="devuser11!", look_for_keys=False, allow_agent=False)
 
-    #   명령어 실행
+    #  명령어 실행
+    #  실행 결과를 표준콘솔입력(stdin), 표준콘솔출력(stdout), 표준에러출력(stderr)에 리턴한다.
     stdin, stdout, stderr = cli.exec_command("jupyter-notebook list")
     #   실행한 명령어에 대한 결과 텍스트
     lines = stdout.readlines()
     resultData = ''.join(lines)
-
     print(resultData)  # 결과 확인
 
-    return resultData
+    cli.close()
 
+    return resultData
 
 ########################################################################################################################
 #  응답부 구현
@@ -100,8 +102,7 @@ def helpprinf(update, context):
                                                            " '/tran' : 구글번역을 통한 한글을 영문으로 변환하여 출력합니다. " + "\n\n" +
                                                            " 그외 여러 기능들이 추가로 개발될 예정입니다.")
     except Exception:
-        err = traceback.format_exc()
-        Errlog.saveLog('ERROR', str(err))
+        Errlog.saveLog('ERROR')
 
 #  아래부터는 특정 키워드를 입력받으면 출력을 처리하는 단일커맨드 예제를 처리
 #  (if 문을 이용한 처리 예제)
@@ -133,8 +134,7 @@ def botsetprinf(update, context):
         else :
             context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 은(는) 아직 설정되지 않은 단어입니다")
     except Exception:
-        err = traceback.format_exc()
-        Errlog.saveLog('ERROR', str(err))
+        Errlog.saveLog('ERROR')
 
 #  아래부터는 웹사이트 검색기능 처리
 def botgoogleprinf(update, context):
@@ -150,8 +150,7 @@ def botgoogleprinf(update, context):
         context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 구글 검색")
         context.bot.sendMessage(chat_id=chat_room_id, text=url+keywords)
     except Exception:
-        err = traceback.format_exc()
-        Errlog.saveLog('ERROR', str(err))
+        Errlog.saveLog('ERROR')
 
 def botnaverprinf(update, context):
     try:
@@ -166,8 +165,7 @@ def botnaverprinf(update, context):
         context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 네이버 검색")
         context.bot.sendMessage(chat_id=chat_room_id, text=url+keywords)
     except Exception:
-        err = traceback.format_exc()
-        Errlog.saveLog('ERROR', str(err))
+        Errlog.saveLog('ERROR')
 
 #  아래부터는 입력받은 메세지를 번역하는 기능을 제공
 def botgoogletranprinf(update, context):
@@ -188,8 +186,7 @@ def botgoogletranprinf(update, context):
         context.bot.sendMessage(chat_id=chat_room_id, text=keywords+" 구글번역")
         context.bot.sendMessage(chat_id=chat_room_id, text=sentence)
     except Exception:
-        err = traceback.format_exc()
-        Errlog.saveLog('ERROR', str(err))
+        Errlog.saveLog('ERROR')
 
 #  아래부터는 주기적으로 특정메세지를 띄우는 예제를 처리
 
@@ -202,19 +199,18 @@ def botgoogletranprinf(update, context):
 #  참고로 한글명령어가 안됨.
 try:
     #  command값을 upper로 일괄 변환해서 실행처리
+    Errlog.saveLog('START')
     updater.dispatcher.add_handler(CommandHandler("help".upper(), helpprinf))
     updater.dispatcher.add_handler(CommandHandler('set'.upper(), botsetprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('google'.upper(), botgoogleprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('naver'.upper(), botnaverprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('tran'.upper(), botgoogletranprinf, pass_args=True))
-
     mysql.selmysql('TEMP', '실행')
 
-    err = traceback.format_exc()
-    Errlog.saveLog('INFO', str(err))
+    #  err = traceback.format_exc()
+    #  Errlog.saveLog('INFO', str(err))
 except Exception:
-    err = traceback.format_exc()
-    Errlog.saveLog('ERROR', str(err))
+    Errlog.saveLog('ERROR')
 ########################################################################################################################
 
 ########################################################################################################################
