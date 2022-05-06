@@ -199,7 +199,7 @@ def botgoogletranprinf(update, context):
 #  참고로 한글명령어가 안됨.
 try:
     #  command값을 upper로 일괄 변환해서 실행처리
-    Errlog.saveLog('START')
+    Errlog.saveLog('INFO')
     updater.dispatcher.add_handler(CommandHandler("help".upper(), helpprinf))
     updater.dispatcher.add_handler(CommandHandler('set'.upper(), botsetprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('google'.upper(), botgoogleprinf, pass_args=True))

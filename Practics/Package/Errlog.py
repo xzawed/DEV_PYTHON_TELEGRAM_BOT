@@ -41,7 +41,12 @@ Log.addHandler(FileHandler)
 #  호출부 구현
 def saveLog(state):
     log = traceback.format_exc()
-    Log.error('MESSAGE : '+str(log))
+
+    if   state == "INFO":
+        Log.info('MESSAGE : '+str(log))
+    elif state == "ERROR":
+        Log.error('MESSAGE : '+str(log))
+
     mysql.selmysql('LOG', (state, str(log)))
     print(state+" : "+str(log))
 ########################################################################################################################
