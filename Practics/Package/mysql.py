@@ -95,7 +95,7 @@ def selmysql(opt, data):
     try:
         result = ""
         MariaDB.sessionmysql(MariaDB)
-
+        print("정상적으로 MariaDB에 연결되었습니다.")
         if   opt == "TEMP":
             MariaDB.tempmysql(MariaDB, data)
         elif opt == "TOKEN":
@@ -104,6 +104,7 @@ def selmysql(opt, data):
             MariaDB.logmysql(MariaDB, data)
 
         MariaDB.closemysql(MariaDB)
+        print("정상적으로 MariaDB에 연결 해제되었습니다.")
 
         return result
     except Exception:
