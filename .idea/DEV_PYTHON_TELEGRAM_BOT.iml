@@ -6,7 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/Practics/log" />
       <excludeFolder url="file://$MODULE_DIR$/Practics/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.8 (python-telegram-bot)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.8 (DEV_PYTHON_TELEGRAM_BOT)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
