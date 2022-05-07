@@ -133,7 +133,7 @@ def botsetprinf(update, context):
                                                              + "         " + str(my_server_env_domain) + "\n\n"
                                                              + " CPU : " + str(my_server_env_cpu) + "\n\n"
                                                              + " CPU 갯수 : " + str(my_server_env_cpu_cnt))
-        elif keywords == "주피터 토큰":
+        elif keywords == "토큰":
             jupyter_token = execcommands()
             context.bot.sendMessage(chat_id=chat_room_id, text=" jupyter token : "+jupyter_token)
         else :
