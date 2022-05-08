@@ -40,9 +40,16 @@ curs = db.cursor()
 
 ########################################################################################################################
 #  호출부 구현
-#  class개념
+#  class 개념
+
+
 class MariaDB:
+
+    sql = ""
+    db = type(None)
+    curs = type(None)
     #  MariaDB setting
+
     def sessionmysql(self):
         self.db = pymysql.connect(
                                     host='xzawed.iptime.org',
@@ -59,19 +66,19 @@ class MariaDB:
 
     #  MariaDB 연결 이후 SELECT, UPDATE, INSERT, DELETE 에 해당 되는 내용을 호출 처리
     def tempmysql(self, data):
-        sql = "SELECT %s RESULT;"
-        self.curs.execute(sql, data)
+        self.sql = "SELECT %s RESULT;"
+        self.curs.execute(self.sql, data)
         result = self.curs.fetchall()
-        x = ""
+        message = ""
         for x in result:
             #  print(x['TOKEN'])
             message = x['RESULT']
 
-        print("정상 적으로 "+ message +" 되었 습니다.")
+        print("정상 적으로 " + message + " 되었 습니다.")
 
     def tokenmysql(self, data):
-        sql = "SELECT TOKEN FROM BOT_TOKEN WHERE COMCD = %s AND BOT_ID = %s; "
-        self.curs.execute(sql, data)
+        self.sql = "SELECT TOKEN FROM BOT_TOKEN WHERE COMCD = %s AND BOT_ID = %s; "
+        self.curs.execute(self.sql, data)
         token_list = self.curs.fetchall()
         xzawed_token = ""
         for x in token_list:
@@ -81,8 +88,8 @@ class MariaDB:
         return xzawed_token
 
     def logmysql(self, data):
-        sql = "INSERT INTO BOT_LOG ( SEQ, WRITE_DATE, STATE, LOG, COMCD ) VALUES ( nextval(JOB_LOG_SEQ), SYSDATE(), %s, %s, 'TELEGRAM' ) "
-        self.curs.execute(sql, data)
+        self.sql = "INSERT INTO BOT_LOG ( SEQ, WRITE_DATE, STATE, LOG, COMCD ) VALUES ( nextval(JOB_LOG_SEQ), SYSDATE(), %s, %s, 'TELEGRAM' ) "
+        self.curs.execute(self.sql, data)
         self.db.commit()
 
     #  MariaDB Close
@@ -94,22 +101,24 @@ class MariaDB:
 
 ########################################################################################################################
 #  전역 함수 처리(외부 에서 호출 할 때 쓰임)
-def selmysql(opt, data):
-    try:
-        result = ""
-        MariaDB.sessionmysql(MariaDB)
-        #  print("정상적 으로 MariaDB에 연결 되었 습니다.")
-        if   opt == "TEMP":
-            MariaDB.tempmysql(MariaDB, data)
-        elif opt == "TOKEN":
-            result = MariaDB.tokenmysql(MariaDB, data)
-        elif opt == "LOG":
-            MariaDB.logmysql(MariaDB, data)
+class MYSQL(MariaDB):
 
-        MariaDB.closemysql(MariaDB)
-        #  print("정상적 으로 MariaDB에 연결 해제 되었 습니다.")
+    def selmysql(self, opt, data):
+        try:
+            result = ""
+            super(MYSQL, self).sessionmysql(self)
+            #  print("정상적 으로 MariaDB에 연결 되었 습니다.")
+            if   opt == "TEMP":
+                super(MYSQL, self).tempmysql(self, data)
+            elif opt == "TOKEN":
+                result = super(MYSQL, self).tokenmysql(self, data)
+            elif opt == "LOG":
+                super(MYSQL, self).logmysql(self, data)
 
-        return result
-    except Exception:
-        Errlog.savelog('ERROR')
+            super(MYSQL, self).closemysql(self)
+            #  print("정상적 으로 MariaDB에 연결 해제 되었 습니다.")
+
+            return result
+        except Exception:
+            Errlog.savelog('ERROR')
 ########################################################################################################################

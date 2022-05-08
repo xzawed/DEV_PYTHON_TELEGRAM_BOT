@@ -44,13 +44,14 @@ import paramiko
 import datetime
 
 #  개별적 으로 생성한 내용
-import mysql
+from mysql import *
 import Errlog
 ########################################################################################################################
 
 #  전역 변수
 #  telegram token key 와 chat room id 입력
-my_api_key = mysql.selmysql('TOKEN', ('TELEGRAM', '@xzawed_bot'))
+DB = MYSQL
+my_api_key = DB.selmysql(self=DB, opt='TOKEN', data=('TELEGRAM', '@xzawed_bot'))
 chat_room_id = -697051008
 my_server_env_os = platform.system()
 my_server_env_os_det = platform.platform()
@@ -280,7 +281,7 @@ try:
     updater.dispatcher.add_handler(CommandHandler('naver'.upper(), botnaverprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('tran'.upper(), botgoogletranprinf, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('date'.upper(), botdateprinf, pass_args=True))
-    mysql.selmysql('TEMP', '실행')
+    DB.selmysql(self=DB, opt='TEMP', data='실행')
 
     #  err = traceback.format_exc()
     #  Errlog.saveLog('INFO', str(err))
