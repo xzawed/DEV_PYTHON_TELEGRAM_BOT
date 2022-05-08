@@ -69,29 +69,25 @@ try:
 except Exception:
     Errlog.savelog('ERROR')
 
-########################################################################################################################
 
+########################################################################################################################
 def execcommands():
     #  SSH Client 접속 - 추후 해당 내용은 DB 에서 불러 오는 내용 으로 수정 예정
     cli = paramiko.SSHClient()
     cli.set_missing_host_key_policy(paramiko.AutoAddPolicy)
     #  pwd = getpass.getpass("devuser11!")
     cli.connect("xzawed.iptime.org", port=2153, username="devuser", password="devuser11!", look_for_keys=False, allow_agent=False)
-
     #  명령어 실행
     #  실행 결과를 표준 콘솔 입력(stdin), 표준 콘솔 출력(stdout), 표준 에러 출력(stderr)에 리턴 한다.
     stdin, stdout, stderr = cli.exec_command("jupyter-notebook list")
     #   실행한 명령어 에 대한 결과 텍스트
     lines = stdout.readlines()
     resultdata = ''.join(lines)
-
     resultdata = resultdata[resultdata.find('?')+1:resultdata.find('::')]
-
     print(resultdata)  # 결과 확인
-
     cli.close()
-
     return resultdata
+
 
 ########################################################################################################################
 #  응답부 구현
@@ -108,6 +104,7 @@ def helpprinf(update, context):
                                                            " 그외 여러 기능 들이 추가로 개발될 예정 입니다.")
     except Exception:
         Errlog.savelog('ERROR')
+
 
 #  아래 부터는 특정 키워드 를 입력 받으면 출력을 처리 하는 단일 커맨드 예제를 처리
 #  (if 문을 이용한 처리 예제)
@@ -141,6 +138,7 @@ def botsetprinf(update, context):
     except Exception:
         Errlog.savelog('ERROR')
 
+
 #  아래 부터는 웹 사이트 검색 기능 처리
 def botgoogleprinf(update, context):
     try:
@@ -157,6 +155,7 @@ def botgoogleprinf(update, context):
     except Exception:
         Errlog.savelog('ERROR')
 
+
 def botnaverprinf(update, context):
     try:
         #  입력한 검색어 를 키워드 변수에 조합 한다.
@@ -171,6 +170,7 @@ def botnaverprinf(update, context):
         context.bot.sendMessage(chat_id=chat_room_id, text=url+keywords)
     except Exception:
         Errlog.savelog('ERROR')
+
 
 #  아래 부터는 입력 받은 메세지 를 번역 하는 기능을 제공
 def botgoogletranprinf(update, context):
@@ -192,6 +192,7 @@ def botgoogletranprinf(update, context):
         context.bot.sendMessage(chat_id=chat_room_id, text=sentence)
     except Exception:
         Errlog.savelog('ERROR')
+
 
 def botdateprinf(update, context):
     try:
@@ -262,9 +263,8 @@ def botdateprinf(update, context):
     except Exception:
         Errlog.savelog('ERROR')
 
+
 #  아래 부터는 주기적 으로 특정 메세지 를 띄우는 예제를 처리
-
-
 ########################################################################################################################
 
 ########################################################################################################################

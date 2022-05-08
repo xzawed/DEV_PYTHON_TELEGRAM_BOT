@@ -62,6 +62,7 @@ class MariaDB:
         sql = "SELECT %s RESULT;"
         self.curs.execute(sql, data)
         result = self.curs.fetchall()
+        x = ""
         for x in result:
             #  print(x['TOKEN'])
             message = x['RESULT']
@@ -72,7 +73,7 @@ class MariaDB:
         sql = "SELECT TOKEN FROM BOT_TOKEN WHERE COMCD = %s AND BOT_ID = %s; "
         self.curs.execute(sql, data)
         token_list = self.curs.fetchall()
-
+        xzawed_token = ""
         for x in token_list:
             #  print(x['TOKEN'])
             xzawed_token = x['TOKEN']
@@ -87,6 +88,8 @@ class MariaDB:
     #  MariaDB Close
     def closemysql(self):
         self.curs.close()
+
+
 ########################################################################################################################
 
 ########################################################################################################################
