@@ -203,10 +203,12 @@ def botdateprinf(update, context):
         #  맨 마지막 글자 1자리를 제거 한다(+)문자 제거
         keywords = keywords[:-1]
 
+        #  날짜 포멧과 요일 포멧
         format_date = '%Y-%m-%d'
         format_week = '%w'
         str_date = str(keywords)
 
+        #  입력 받은 값의 길이가 8자리 일 경우
         if len(str_date) == 8:
             str_date = str_date[0:4]+"-"+str_date[4:6]+"-"+str_date[6:8]
 
