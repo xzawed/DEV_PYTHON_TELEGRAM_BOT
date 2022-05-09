@@ -46,6 +46,7 @@ import datetime
 #  개별적 으로 생성한 내용
 from mysql import *
 import Errlog
+import DateUtil
 ########################################################################################################################
 
 #  전역 변수
@@ -207,7 +208,6 @@ def botdateprinf(update, context):
 
         #  날짜 포멧과 요일 포멧
         format_date = '%Y-%m-%d'
-        format_week = '%w'
         str_date = str(keywords)
 
         #  입력 받은 값의 길이가 8자리 일 경우
@@ -224,6 +224,13 @@ def botdateprinf(update, context):
         except Exception:
             dt_date = datetime.datetime.now()
 
+        today = DateUtil.DateUtil(dt_date)
+
+        dt_now_date = datetime.datetime.strftime(dt_date,format_date)
+        dt_week_fst_date = datetime.datetime.strftime(today.getWeekFirstDate(),format_date)
+        dt_week_lst_date = datetime.datetime.strftime(today.getWeekLastDate(), format_date)
+
+        '''
         #  문자형
         dy_str_date = dt_date.strftime(format_week)
         #  숫자형
@@ -251,16 +258,12 @@ def botdateprinf(update, context):
         dt_str_date = datetime.datetime.strftime(dt_date, format_date)
         mon_str_date = datetime.datetime.strftime(mon_date, format_date)
         nw_str_date = datetime.datetime.strftime(nw_date, format_date)
+        '''
 
-        #  print(dt_date)
-        #  print(mon_date)
-        #  print(nw_date)
-        #  print(dy_str_date)
-        #  print(i)
 
-        context.bot.sendMessage(chat_id=chat_room_id, text="현재 일자 : "+dt_str_date + "\n"
-                                                           "금주 월요일 : "+mon_str_date + "\n"
-                                                           "금주 일요일 : "+nw_str_date)
+        context.bot.sendMessage(chat_id=chat_room_id, text="현재 일자 : "+dt_now_date + "\n"
+                                                           "금주 월요일 : "+dt_week_fst_date + "\n"
+                                                           "금주 일요일 : "+dt_week_lst_date)
     except Exception:
         Errlog.savelog('ERROR')
 
