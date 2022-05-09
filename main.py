@@ -214,9 +214,6 @@ def botdateprinf(update, context):
         if len(str_date) == 8:
             str_date = str_date[0:4]+"-"+str_date[4:6]+"-"+str_date[6:8]
 
-        #  1주
-        one_week = datetime.timedelta(weeks=1)
-
         #  날짜형
         #  현재 일자
         try:
@@ -229,37 +226,6 @@ def botdateprinf(update, context):
         dt_now_date = datetime.datetime.strftime(dt_date,format_date)
         dt_week_fst_date = datetime.datetime.strftime(today.getWeekFirstDate(),format_date)
         dt_week_lst_date = datetime.datetime.strftime(today.getWeekLastDate(), format_date)
-
-        '''
-        #  문자형
-        dy_str_date = dt_date.strftime(format_week)
-        #  숫자형
-        dy_int_date = int(dy_str_date)
-        dy_calc_date = dy_int_date
-        #  현재 일자 기준 현재 주차의 월요일 을 구한다.
-
-        i = 0
-        while dy_calc_date >= 1:
-            dy_calc_date = dy_int_date-i
-            if dy_calc_date == 1:
-                break
-            else:
-                i += 1
-
-        if dy_int_date == 0:
-            i = 6
-
-        #  입력한 날짜의 해당 주차의 월요일
-        mon_date = dt_date - datetime.timedelta(days=i)
-        #  다음주 일요일
-        nw_date = mon_date + one_week - datetime.timedelta(days=1)
-
-        #  문자형 으로 변경
-        dt_str_date = datetime.datetime.strftime(dt_date, format_date)
-        mon_str_date = datetime.datetime.strftime(mon_date, format_date)
-        nw_str_date = datetime.datetime.strftime(nw_date, format_date)
-        '''
-
 
         context.bot.sendMessage(chat_id=chat_room_id, text="현재 일자 : "+dt_now_date + "\n"
                                                            "금주 월요일 : "+dt_week_fst_date + "\n"
