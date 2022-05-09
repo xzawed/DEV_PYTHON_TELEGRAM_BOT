@@ -214,9 +214,6 @@ def botdateprinf(update, context):
         if len(str_date) == 8:
             str_date = str_date[0:4]+"-"+str_date[4:6]+"-"+str_date[6:8]
 
-        #  1주
-        one_week = datetime.timedelta(weeks=1)
-
         #  날짜형
         #  현재 일자
         try:
