@@ -10,8 +10,7 @@ import logging
 #  traceback 프로 그램 에러
 import traceback
 
-import mysql
-
+from mysql import *
 
 ########################################################################################################################
 #  전역 변수
@@ -51,7 +50,7 @@ def savelog(state):
     elif state == "ERROR":
         Log.error('MESSAGE : '+str(log))
 
-    DB = mysql.MYSQL
+    DB = MYSQL
     DB.selmysql(self=DB ,opt='LOG', data=(state, str(log)))
     print(state+" : "+str(log))
 ########################################################################################################################

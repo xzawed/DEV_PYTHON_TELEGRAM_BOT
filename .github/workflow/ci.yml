@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - master
+      - Developer
   pull_request:
     branches:
       - "**"
@@ -55,7 +55,7 @@ jobs:
           message: |
             Author: ${{github.actor}}
             
-            Status: 😚 **Success**
+            Status: **Success**
             
             Commit message: ${{ github.event.commits[0].message }}
             
