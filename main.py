@@ -196,6 +196,7 @@ def botgoogletranprinf(update, context):
         Errlog.savelog('ERROR')
 
 
+#  입력받은 날짜 해당주차의 첫날짜와 마지막 날짜를 구함
 def botdateprinf(update, context):
     try:
         #  입력한 검색어 를 키워드 변수에 조합 한다.
