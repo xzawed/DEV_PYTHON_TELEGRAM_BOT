@@ -3,6 +3,7 @@
 #  일자 / 작업자 / 내용
 #  2022.04.11 / 이승호 / Maria DB 내에 텔레 그램 메세지 및 로그 기록 정보를 저장 하기 위함
 ########################################################################################################################
+import types
 
 #  텔레 그램 봇 에서 발생한 송 수신한 정보를 DB 기록 하기 위한 처리부
 #  MariaDB
@@ -21,22 +22,6 @@ import Errlog
 #  autocommit = 자동 으로 commit 처리 할 지 여부
 #  cursorclass = 커서 타입 ( https://pymysql.readthedocs.io/en/latest/modules/cursors.html ) 참조
 ########################################################################################################################
-#  전역 변수
-"""
-db = pymysql.connect(
-    host='dirtchamber.iptime.org',  # host name (연결 주소)
-    port=13306,
-    user='root',  # user name (ID)
-    password='root',  # password (암호)
-    db='DEV_MARIADB',  # db name (데이터 베이스 명)
-    charset='utf8',
-    autocommit=False,
-    cursorclass=pymysql.cursors.DictCursor
-)
-#  DB와 관련된 커서 객체를 생성 한다
-curs = db.cursor()
-"""
-########################################################################################################################
 
 ########################################################################################################################
 #  호출부 구현
@@ -45,24 +30,26 @@ curs = db.cursor()
 
 class MariaDB:
 
+    #  MariaDB setting
     sql = ""
     db = type(None)
     curs = type(None)
-    #  MariaDB setting
-
-    def sessionmysql(self):
+    def conn(self):
         self.db = pymysql.connect(
-                                    host='xzawed.iptime.org',
-                                    port=13306,
-                                    user='root',
-                                    password='root',
-                                    db='DEV_MARIADB',
-                                    charset='utf8',
-                                    autocommit=False,
-                                    cursorclass=pymysql.cursors.DictCursor
+                                   host='xzawed.iptime.org',
+                                   port=13306,
+                                   user='root',
+                                   password='root',
+                                   db='DEV_MARIADB',
+                                   charset='utf8',
+                                   autocommit=False,
+                                   cursorclass=pymysql.cursors.DictCursor
                                  )
-        #  DB와 관련된 커서 객체를 생성 한다
+    def getcurs(self) :
         self.curs = self.db.cursor()
+
+    def closemysql(self) :
+        self.db.close()
 
     #  MariaDB 연결 이후 SELECT, UPDATE, INSERT, DELETE 에 해당 되는 내용을 호출 처리
     def tempmysql(self, data):
@@ -92,10 +79,6 @@ class MariaDB:
         self.curs.execute(self.sql, data)
         self.db.commit()
 
-    #  MariaDB Close
-    def closemysql(self):
-        self.curs.close()
-
 
 ########################################################################################################################
 
@@ -106,19 +89,21 @@ class MYSQL(MariaDB):
     def selmysql(self, opt, data):
         try:
             result = ""
-            super(MYSQL, self).sessionmysql(self)
+            MYSQL.conn(self)
+            MYSQL.getcurs(self)
+
             #  print("정상적 으로 MariaDB에 연결 되었 습니다.")
             if   opt == "TEMP":
-                super(MYSQL, self).tempmysql(self, data)
+                MYSQL.tempmysql(self, data)
             elif opt == "TOKEN":
-                result = super(MYSQL, self).tokenmysql(self, data)
+                result = MYSQL.tokenmysql(self, data)
             elif opt == "LOG":
-                super(MYSQL, self).logmysql(self, data)
+                MYSQL.logmysql(self, data)
 
-            super(MYSQL, self).closemysql(self)
+            MYSQL.closemysql(self)
             #  print("정상적 으로 MariaDB에 연결 해제 되었 습니다.")
-
             return result
+
         except Exception:
             Errlog.savelog('ERROR')
 ########################################################################################################################

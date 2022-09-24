@@ -44,21 +44,27 @@ import paramiko
 import datetime
 
 #  개별적 으로 생성한 내용
-from mysql import *
+import mysql
 import Errlog
 import DateUtil
+import psutil
 ########################################################################################################################
 
 #  전역 변수
 #  telegram token key 와 chat room id 입력
-DB = MYSQL
+DB = mysql.MYSQL
 my_api_key = DB.selmysql(self=DB, opt='TOKEN', data=('TELEGRAM', '@xzawed_bot'))
 chat_room_id = -697051008
+
 my_server_env_os = platform.system()
 my_server_env_os_det = platform.platform()
 my_server_env_os_ver = platform.version()
 my_server_env_cpu = platform.processor()
 my_server_env_cpu_cnt = multiprocessing.cpu_count()
+my_server_cpu_frq = psutil.cpu_freq()
+my_server_env_cpu_frq = round( my_server_cpu_frq.current / 1000, 2)
+my_server_memory = psutil.virtual_memory()
+my_server_env_memory = round(my_server_memory.total / 1024**3)
 my_server_env_domain = "EXT IP ADDR : "+requests.get("https://api.ipify.org").text \
                                   + " / domain : xzawed.iptime.org "
 #  telegram bot setting
@@ -131,7 +137,10 @@ def botsetprinf(update, context):
                                                              + "         " + str(my_server_env_os_ver) + "\n\n"
                                                              + "         " + str(my_server_env_domain) + "\n\n"
                                                              + " CPU : " + str(my_server_env_cpu) + "\n\n"
-                                                             + " CPU 갯수 : " + str(my_server_env_cpu_cnt))
+                                                             + "       " + str(my_server_env_cpu_frq) +"GHz"+ "\n\n"
+                                                             + " CPU 갯수 : " + str(my_server_env_cpu_cnt) +"Core"+ "\n\n"
+                                                             + " MEMORY : " + str(my_server_env_memory)) + "GB"
+
         elif keywords == "토큰":
             jupyter_token = execcommands()
             context.bot.sendMessage(chat_id=chat_room_id, text=" jupyter token : "+jupyter_token)
@@ -196,6 +205,7 @@ def botgoogletranprinf(update, context):
         Errlog.savelog('ERROR')
 
 
+#  입력받은 날짜 해당주차의 첫날짜와 마지막 날짜를 구함
 def botdateprinf(update, context):
     try:
         #  입력한 검색어 를 키워드 변수에 조합 한다.
@@ -226,37 +236,6 @@ def botdateprinf(update, context):
         dt_now_date = datetime.datetime.strftime(dt_date,format_date)
         dt_week_fst_date = datetime.datetime.strftime(today.getWeekFirstDate(),format_date)
         dt_week_lst_date = datetime.datetime.strftime(today.getWeekLastDate(), format_date)
-
-        '''
-        #  문자형
-        dy_str_date = dt_date.strftime(format_week)
-        #  숫자형
-        dy_int_date = int(dy_str_date)
-        dy_calc_date = dy_int_date
-        #  현재 일자 기준 현재 주차의 월요일 을 구한다.
-
-        i = 0
-        while dy_calc_date >= 1:
-            dy_calc_date = dy_int_date-i
-            if dy_calc_date == 1:
-                break
-            else:
-                i += 1
-
-        if dy_int_date == 0:
-            i = 6
-
-        #  입력한 날짜의 해당 주차의 월요일
-        mon_date = dt_date - datetime.timedelta(days=i)
-        #  다음주 일요일
-        nw_date = mon_date + one_week - datetime.timedelta(days=1)
-
-        #  문자형 으로 변경
-        dt_str_date = datetime.datetime.strftime(dt_date, format_date)
-        mon_str_date = datetime.datetime.strftime(mon_date, format_date)
-        nw_str_date = datetime.datetime.strftime(nw_date, format_date)
-        '''
-
 
         context.bot.sendMessage(chat_id=chat_room_id, text="현재 일자 : "+dt_now_date + "\n"
                                                            "금주 월요일 : "+dt_week_fst_date + "\n"

@@ -18,7 +18,7 @@ class DateUtil:
     def getYesterday(self):
 
         today = self.setDate
-        yesterday = self.setDate - timedelta(1)
+        yesterday = today - timedelta(1)
 
         self.result = yesterday
         return self.result
