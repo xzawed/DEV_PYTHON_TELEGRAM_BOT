@@ -44,21 +44,27 @@ import paramiko
 import datetime
 
 #  개별적 으로 생성한 내용
-from mysql import *
+import mysql
 import Errlog
 import DateUtil
+import psutil
 ########################################################################################################################
 
 #  전역 변수
 #  telegram token key 와 chat room id 입력
-DB = MYSQL
+DB = mysql.MYSQL
 my_api_key = DB.selmysql(self=DB, opt='TOKEN', data=('TELEGRAM', '@xzawed_bot'))
 chat_room_id = -697051008
+
 my_server_env_os = platform.system()
 my_server_env_os_det = platform.platform()
 my_server_env_os_ver = platform.version()
 my_server_env_cpu = platform.processor()
 my_server_env_cpu_cnt = multiprocessing.cpu_count()
+my_server_cpu_frq = psutil.cpu_freq()
+my_server_env_cpu_frq = round( my_server_cpu_frq.current / 1000, 2)
+my_server_memory = psutil.virtual_memory()
+my_server_env_memory = round(my_server_memory.total / 1024**3)
 my_server_env_domain = "EXT IP ADDR : "+requests.get("https://api.ipify.org").text \
                                   + " / domain : xzawed.iptime.org "
 #  telegram bot setting
@@ -131,7 +137,10 @@ def botsetprinf(update, context):
                                                              + "         " + str(my_server_env_os_ver) + "\n\n"
                                                              + "         " + str(my_server_env_domain) + "\n\n"
                                                              + " CPU : " + str(my_server_env_cpu) + "\n\n"
-                                                             + " CPU 갯수 : " + str(my_server_env_cpu_cnt))
+                                                             + "       " + str(my_server_env_cpu_frq) +"GHz"+ "\n\n"
+                                                             + " CPU 갯수 : " + str(my_server_env_cpu_cnt) +"Core"+ "\n\n"
+                                                             + " MEMORY : " + str(my_server_env_memory)) + "GB"
+
         elif keywords == "토큰":
             jupyter_token = execcommands()
             context.bot.sendMessage(chat_id=chat_room_id, text=" jupyter token : "+jupyter_token)
