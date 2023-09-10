@@ -29,7 +29,7 @@
 
 #  import telegram
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, CallbackContext, ContextTypes
 
 #  Google 번역기능
 #  from googletrans import *
@@ -72,20 +72,6 @@ my_server_env_memory = round(my_server_memory.total / 1024**3)
 # my_server_env_domain = "EXT IP ADDR : "+format(requests.get("https://api.ipify.org").text)+ " / domain : xzawed.iptime.org "
 my_server_env_domain = " domain : xzawed.iptime.org "
 
-# python-telegram-bot 20버전 이상부터는 하단의 방식이 지원 중단되었음
-##  telegram bot setting
-#mybot = Bot(token=my_api_key)
-#updater = Updater(bot=mybot, update_queue=None)  # bot 에게 들어온 메시지 가 있는지 체크 하는 역할
-## 디스패처를 얻습니다.
-#dispatcher = Updater.dispatcher
-#
-#try:
-#    dispatcher.stop()
-#    updater.job_queue.stop()
-#    updater.stop()
-#except Exception:
-#    Errlog.savelog('ERROR')
-
 myapp = Application.builder().token(my_api_key).build()
 
 
@@ -112,95 +98,81 @@ def execcommands():
 #  응답부 구현
 #  명령어 와 연결할 기능 구현
 #  아래 부터는 특정 커맨드 를 입력 받으면 출력을 처리 하는 단일 커맨드 예제를 처리
-async def helpprinf(update, context):
+async def helpprinf(update: Update, context: CallbackContext):
     try:
-        context.bot.sendMessage(chat_id=update.effective_chat.id, text=" *** 사용 가능한 명령어 리스트 입니다 *** " + "\n\n" +
-                                                                       " '/help' : 도움말 기능 입니다. " + "\n\n" +
-                                                                       " '/set' : hi,토큰,서버에 대한 정보를 제공 합니다. " + "\n\n" +
-                                                                       " '/google' : 구글 에서 검색한 결과 url 정보 를 제공 합니다. " + "\n\n" +
-                                                                       " '/naver' : 네이버 에서 검색한 결과 url 정보 를 제공 합니다. " + "\n\n" +
-                                                                       " '/tran' : 구글 번역 을 통한 한글을 영문 으로 변환 하여 출력 합니다. " + "\n\n" +
-                                                                       " 그외 여러 기능 들이 추가로 개발될 예정 입니다.")
+        user = update.effective_user
+        await update.message.reply_text(" *** 사용 가능한 명령어 리스트 입니다 *** " + "\n\n" +
+                                        " '/help' : 도움말 기능 입니다. " + "\n\n" +
+                                        " '/set' : hi,토큰,서버에 대한 정보를 제공 합니다. " + "\n\n" +
+                                        " '/google' : 구글 에서 검색한 결과 url 정보 를 제공 합니다. " + "\n\n" +
+                                        " '/naver' : 네이버 에서 검색한 결과 url 정보 를 제공 합니다. " + "\n\n" +
+                                        " '/tran' : 구글 번역 을 통한 한글을 영문 으로 변환 하여 출력 합니다. " + "\n\n" +
+                                        " 그외 여러 기능 들이 추가로 개발될 예정 입니다.")
     except Exception:
         Errlog.savelog('ERROR')
 
 
 #  아래 부터는 특정 키워드 를 입력 받으면 출력을 처리 하는 단일 커맨드 예제를 처리
 #  (if 문을 이용한 처리 예제)
-async def botsetprinf(update, context):
+async def botsetprinf(update: Update, context: CallbackContext):
     try:
-        #  2022-04-09 : 사용자 가 입력한 글자를 처리 한다.
-        keywords = ''
-        for arg in context.args:
-            keywords += '{}'.format(arg)+" "
-
-        #  맨 마지막 글자 1자리를 제거 한다(+)문자 제거
-        keywords = keywords[:-1]
+        user = update.effective_user
 
         #  context.bot.sendMessage(chat_id=chat_room_id, text=keywords)
         #  2022-04-09 : 상단 에서 입력 받은 값을 토대로 해당 되는 결과 값을 Return 한다.
-        if   keywords == "hi":
-            context.bot.sendMessage(chat_id=update.effective_chat.id, text="hello~")
-        elif keywords == "서버":
-            context.bot.sendMessage(chat_id=update.effective_chat.id, text=" ***텔레 그램 BOT 개발 서버 정보*** " + "\n"
-                                                                         + " OS : " + str(my_server_env_os) + "\n\n"
-                                                                         + "         " + str(my_server_env_os_det) + "\n\n"
-                                                                         + "         " + str(my_server_env_os_ver) + "\n\n"
-                                                                         + "         " + str(my_server_env_domain) + "\n\n"
-                                                                         + " CPU : " + str(my_server_env_cpu) + "\n\n"
-                                                                         + "       " + str(my_server_env_cpu_frq) +"GHz"+ "\n\n"
-                                                                         + " CPU 갯수 : " + str(my_server_env_cpu_cnt) +"Core"+ "\n\n"
-                                                                         + " MEMORY : " + str(my_server_env_memory)) + "GB"
+        if   update.message.text.find("hi") >= 0:
+            await update.message.reply_text("hello~")
+        elif update.message.text.find("서버") >= 0:
+            await update.message.reply_text(" ***텔레 그램 BOT 개발 서버 정보*** " + "\n"
+                                          + " OS : " + str(my_server_env_os) + "\n\n"
+                                          + "         " + str(my_server_env_os_det) + "\n\n"
+                                          + "         " + str(my_server_env_os_ver) + "\n\n"
+                                          + "         " + str(my_server_env_domain) + "\n\n"
+                                          + " CPU : " + str(my_server_env_cpu) + "\n\n"
+                                          + "       " + str(my_server_env_cpu_frq) +"GHz"+ "\n\n"
+                                          + " CPU 갯수 : " + str(my_server_env_cpu_cnt) +"Core"+ "\n\n"
+                                          + " MEMORY : " + str(my_server_env_memory)+ "GB")
 
-        elif keywords == "토큰":
+        elif update.message.text.find("토큰") >= 0:
             jupyter_token = execcommands()
-            context.bot.sendMessage(chat_id=update.effective_chat.id, text=" jupyter token : "+jupyter_token)
+            await update.message.reply_text(" jupyter token : "+jupyter_token)
         else :
-            context.bot.sendMessage(chat_id=update.effective_chat.id, text=keywords+" 은(는) 아직 설정 되지 않은 단어 입니다")
+            await update.message.reply_text(" 은(는) 아직 설정 되지 않은 단어 입니다")
     except Exception:
         Errlog.savelog('ERROR')
 
 
 #  아래 부터는 웹 사이트 검색 기능 처리
-def botgoogleprinf(update, context):
+async def botgoogleprinf(update: Update, context: CallbackContext):
     try:
-        #  입력한 검색어 를 키워드 변수에 조합 한다.
-        keywords = ''
-        for arg in context.args:
-            keywords += '{}'.format(arg)+"+"
+        user = update.effective_user
+        keywords = update.message.text.lower()
 
-        #  맨 마지막 글자 1자리를 제거 한다(+)문자 제거
-        keywords = keywords[:-1]
         url = "https://www.google.com/search?q="
-        context.bot.sendMessage(chat_id=update.effective_chat.id, text=keywords+" 구글 검색")
-        context.bot.sendMessage(chat_id=update.effective_chat.id, text=url+keywords)
+        await update.message.reply_text(keywords+" 구글 검색")
+        await update.message.reply_text(url+keywords)
     except Exception:
         Errlog.savelog('ERROR')
 
 
-async def botnaverprinf(update, context):
+async def botnaverprinf(update: Update, context: CallbackContext):
     try:
+        user = update.effective_user
         #  입력한 검색어 를 키워드 변수에 조합 한다.
-        keywords = ''
-        for arg in context.args:
-            keywords += '{}'.format(arg)+"+"
+        keywords = update.message.text.lower()
 
-        #  맨 마지막 글자 1자리를 제거 한다(+)문자 제거
-        keywords = keywords[:-1]
         url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query="
-        context.bot.sendMessage(chat_id=update.effective_chat.id, text=keywords+" 네이버 검색")
-        context.bot.sendMessage(chat_id=update.effective_chat.id, text=url+keywords)
+        await update.message.reply_text(keywords+" 네이버 검색")
+        await update.message.reply_text(url+keywords)
     except Exception:
         Errlog.savelog('ERROR')
 
 
 #  아래 부터는 입력 받은 메세지 를 번역 하는 기능을 제공
-async def botgoogletranprinf(update, context):
+async def botgoogletranprinf(update: Update, context: CallbackContext):
     try:
-        keywords = ''
-        #  사용자 가 입력한 단어를 문장 으로 가공 한다.
-        for arg in context.args:
-            keywords += '{}'.format(arg)+" "
+        user = update.effective_user
+        keywords = update.message.text.lower()
 
         translator = Translator()
 
@@ -210,22 +182,17 @@ async def botgoogletranprinf(update, context):
         #  번역한 문장을 변수 처리
         sentence = content.text
 
-        context.bot.sendMessage(chat_id=update.effective_chat.id, text=keywords+" 구글 번역")
-        context.bot.sendMessage(chat_id=update.effective_chat.id, text=sentence)
+        await update.message.reply_text(keywords+" 구글 번역")
+        await update.message.reply_text(sentence)
     except Exception:
         Errlog.savelog('ERROR')
 
 
 #  입력받은 날짜 해당주차의 첫날짜와 마지막 날짜를 구함
-def botdateprinf(update, context):
+async def botdateprinf(update: Update, context: CallbackContext):
     try:
-        #  입력한 검색어 를 키워드 변수에 조합 한다.
-        keywords = ''
-        for arg in context.args:
-            keywords += '{}'.format(arg)+"+"
-
-        #  맨 마지막 글자 1자리를 제거 한다(+)문자 제거
-        keywords = keywords[:-1]
+        user = update.effective_user
+        keywords = update.message.text.lower()
 
         #  날짜 포멧과 요일 포멧
         format_date = '%Y-%m-%d'
@@ -248,9 +215,9 @@ def botdateprinf(update, context):
         dt_week_fst_date = datetime.datetime.strftime(today.getWeekFirstDate(),format_date)
         dt_week_lst_date = datetime.datetime.strftime(today.getWeekLastDate(), format_date)
 
-        context.bot.sendMessage(chat_id=update.effective_chat.id, text="현재 일자 : "+dt_now_date + "\n"
-                                                                       "금주 월요일 : "+dt_week_fst_date + "\n"
-                                                                       "금주 일요일 : "+dt_week_lst_date)
+        await update.message.reply_text("현재 일자 : "+dt_now_date + "\n"
+                                        "금주 월요일 : "+dt_week_fst_date + "\n"
+                                        "금주 일요일 : "+dt_week_lst_date)
     except Exception:
         Errlog.savelog('ERROR')
 
@@ -266,11 +233,11 @@ try:
     #  command 값을 upper 로 일괄 변환 해서 실행 처리
     Errlog.savelog('INFO')
     myapp.add_handler(CommandHandler("help".upper(), helpprinf))
-    myapp.add_handler(CommandHandler('set'.upper(), botsetprinf))
-    myapp.add_handler(CommandHandler('google'.upper(), botgoogleprinf))
-    myapp.add_handler(CommandHandler('naver'.upper(), botnaverprinf))
-    myapp.add_handler(CommandHandler('tran'.upper(), botgoogletranprinf))
-    myapp.add_handler(CommandHandler('date'.upper(), botdateprinf))
+    myapp.add_handler(CommandHandler('set'.upper(), botsetprinf, has_args=True))
+    myapp.add_handler(CommandHandler('google'.upper(), botgoogleprinf, has_args=True))
+    myapp.add_handler(CommandHandler('naver'.upper(), botnaverprinf, has_args=True))
+    myapp.add_handler(CommandHandler('tran'.upper(), botgoogletranprinf, has_args=True))
+    myapp.add_handler(CommandHandler('date'.upper(), botdateprinf, has_args=True))
     DB.selmysql(self=DB, opt='TEMP', data='실행')
 
     #  err = traceback.format_exc()
