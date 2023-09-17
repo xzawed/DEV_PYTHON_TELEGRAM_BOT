@@ -50,7 +50,7 @@ def savelog(state):
     elif state == "ERROR":
         Log.error('MESSAGE : '+str(log))
 
-    DB = mysql.MYSQL
-    DB.selmysql(self=DB ,opt='LOG', data=(state, str(log)))
+    DB = mysql.MYSQL()
+    DB.selmysql(opt='LOG', data=(state, str(log)))
     print(state+" : "+str(log))
 ########################################################################################################################

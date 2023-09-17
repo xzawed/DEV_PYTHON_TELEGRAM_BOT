@@ -16,6 +16,9 @@
 #  Slack에 연동 확인 테스트
 #  2023.09.10 python-telegram-bot 이 버전업으로 인해 변경됨에 따라 하단의 기존코드 내용을 수정작업
 #             dispatcher를 통해 이벤트 핸들러를 처리하는 방식에서 application을 통해 비동기 방식으로 변경
+#             기존의 dispatcher.add_handler(CommandHandler("명령어", 함수명)) 방식에서
+#             application.add_handler(CommandHandler("명령어", 함수명)) 방식으로 변경
+#             참고 : https://python-telegram-bot.readthedocs.io/en/stable/telegram.ext.html
 ########################################################################################################################
 
 #  import os
@@ -44,11 +47,10 @@ import requests
 #  SSH 접속
 #  cryptography ver: 36.0.2 down
 import paramiko
-
 import datetime
 
 #  개별적 으로 생성한 내용
-import mysql
+from mysql import *
 import Errlog
 import DateUtil
 import psutil
@@ -56,8 +58,9 @@ import psutil
 
 #  전역 변수
 #  telegram token key 와 chat room id 입력
-DB = mysql.MYSQL
-my_api_key = DB.selmysql(self=DB, opt='TOKEN', data=('TELEGRAM', '@xzawed_bot'))
+DB = MYSQL()
+
+my_api_key = DB.selmysql(opt='TOKEN', data=('TELEGRAM', '@xzawed_bot'))
 #  chat_room_id = -697051008
 
 my_server_env_os = platform.system()
@@ -100,7 +103,6 @@ def execcommands():
 #  아래 부터는 특정 커맨드 를 입력 받으면 출력을 처리 하는 단일 커맨드 예제를 처리
 async def helpprinf(update: Update, context: CallbackContext):
     try:
-        user = update.effective_user
         await update.message.reply_text(" *** 사용 가능한 명령어 리스트 입니다 *** " + "\n\n" +
                                         " '/help' : 도움말 기능 입니다. " + "\n\n" +
                                         " '/set' : hi,토큰,서버에 대한 정보를 제공 합니다. " + "\n\n" +
@@ -238,7 +240,7 @@ try:
     myapp.add_handler(CommandHandler('naver'.upper(), botnaverprinf, has_args=True))
     myapp.add_handler(CommandHandler('tran'.upper(), botgoogletranprinf, has_args=True))
     myapp.add_handler(CommandHandler('date'.upper(), botdateprinf, has_args=True))
-    DB.selmysql(self=DB, opt='TEMP', data='실행')
+    DB.selmysql(opt='TEMP', data='실행')
 
     #  err = traceback.format_exc()
     #  Errlog.saveLog('INFO', str(err))

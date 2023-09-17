@@ -11,7 +11,6 @@ import pymysql
 #  개별적 으로 생성한 내용
 import Errlog
 
-
 #  connection 정보
 #  host= 연결 주소 ip or 도메인
 #  port = 포트 번호
@@ -34,6 +33,11 @@ class MariaDB:
     sql = ""
     db = type(None)
     curs = type(None)
+
+    def __init__(self):
+        #  MariaDB setting
+        self.conn()
+
     def conn(self):
         self.db = pymysql.connect(
                                    host='xzawed.iptime.org',
@@ -86,21 +90,27 @@ class MariaDB:
 #  전역 함수 처리(외부 에서 호출 할 때 쓰임)
 class MYSQL(MariaDB):
 
-    def selmysql(self, opt, data):
-        try:
-            result = ""
-            MYSQL.conn(self)
-            MYSQL.getcurs(self)
+    def __init__(self):
+        #  MariaDB setting
+        self.sql = super().sql
+        self.db = super().db
+        self.curs = super().curs
 
+    def selmysql(self, opt, data):
+        result = ""
+        self.conn()
+        self.getcurs()
+
+        try:
             #  print("정상적 으로 MariaDB에 연결 되었 습니다.")
             if   opt == "TEMP":
-                MYSQL.tempmysql(self, data)
+                self.tempmysql(data)
             elif opt == "TOKEN":
-                result = MYSQL.tokenmysql(self, data)
+                result = self.tokenmysql(data)
             elif opt == "LOG":
-                MYSQL.logmysql(self, data)
+                self.logmysql(data)
 
-            MYSQL.closemysql(self)
+            self.closemysql()
             #  print("정상적 으로 MariaDB에 연결 해제 되었 습니다.")
             return result
 
