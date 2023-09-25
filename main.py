@@ -84,7 +84,7 @@ def execcommands():
     cli = paramiko.SSHClient()
     cli.set_missing_host_key_policy(paramiko.AutoAddPolicy)
     #  pwd = getpass.getpass("devuser11!")
-    cli.connect(hostname="xzawed.iptime.org", port=22, username="devuser", password="Dkwjd@829", look_for_keys=False, allow_agent=False)
+    cli.connect(hostname="xzawed.iptime.org", port=22, username="devuser", password="devuser", look_for_keys=False, allow_agent=False)
     #  명령어 실행
     #  실행 결과를 표준 콘솔 입력(stdin), 표준 콘솔 출력(stdout), 표준 에러 출력(stderr)에 리턴 한다.
     stdin, stdout, stderr = cli.exec_command("jupyter-notebook list")
